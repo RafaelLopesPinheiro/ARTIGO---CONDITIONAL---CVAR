@@ -1,0 +1,801 @@
+2026-01-08 15:01:42,284 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:42,285 - __main__ - INFO - INICIANDO PIPELINE DE ALOCA��O �TIMA
+2026-01-08 15:01:42,285 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:42,285 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:01:42,286 - __main__ - INFO - ETAPA 1: PREPARA��O DE DADOS
+2026-01-08 15:01:42,286 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:42,286 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:01:42,296 - src.data_preparation - INFO - Dados carregados:  5418 observa��es, 9 produtos
+2026-01-08 15:01:42,296 - src.data_preparation - INFO - Per�odo: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:01:42,297 - src.data_preparation - INFO - Criando features
+2026-01-08 15:01:42,369 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:01:42,369 - src.data_preparation - INFO - Dividindo dados em treino, calibra��o e teste
+2026-01-08 15:01:42,376 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:01:42,376 - src.data_preparation - INFO - Calibra��o: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:01:42,377 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:01:42,384 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:01:42,385 - __main__ - INFO - ETAPA 2: PREVIS�O PROBABIL�STICA
+2026-01-08 15:01:42,385 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:42,385 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:01:42,385 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:01:44,054 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:01:44,114 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:01:44,167 - src.forecasting - INFO - Treinamento conclu�do
+2026-01-08 15:01:44,167 - src.forecasting - INFO - Calibrando intervalos com alpha=0.1
+2026-01-08 15:01:44,177 - src.forecasting - INFO - Corre��o conformal: 0.89
+2026-01-08 15:01:44,196 - src.forecasting - INFO - Avaliando previs�es
+2026-01-08 15:01:44,196 - src.forecasting - INFO - M�tricas de previs�o:
+2026-01-08 15:01:44,196 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:01:44,197 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:01:44,197 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:01:44,197 - src.forecasting - INFO -   Coverage (%): 77.29
+2026-01-08 15:01:44,197 - src.forecasting - INFO -   Avg Interval Width: 22.27
+2026-01-08 15:01:44,199 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:01:44,199 - __main__ - INFO - ETAPA 3: OTIMIZA��O DE ALOCA��O
+2026-01-08 15:01:44,199 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:44,208 - src.optimization - INFO - Gerando 1000 cen�rios de demanda
+2026-01-08 15:01:44,219 - src.optimization - INFO - Cen�rios gerados: shape (1000, 9)
+2026-01-08 15:01:44,220 - src.optimization - INFO - Resolvendo otimiza��o CVaR com alpha=0.1
+2026-01-08 15:01:44,513 - src.optimization - ERROR - Erro na otimiza��o: The solver ECOS is not installed.
+2026-01-08 15:01:58,952 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:58,953 - __main__ - INFO - INICIANDO PIPELINE DE ALOCA��O �TIMA
+2026-01-08 15:01:58,953 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:58,953 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:01:58,954 - __main__ - INFO - ETAPA 1: PREPARA��O DE DADOS
+2026-01-08 15:01:58,954 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:58,954 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:01:58,963 - src.data_preparation - INFO - Dados carregados:  5418 observa��es, 9 produtos
+2026-01-08 15:01:58,964 - src.data_preparation - INFO - Per�odo: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:01:58,964 - src.data_preparation - INFO - Criando features
+2026-01-08 15:01:59,045 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:01:59,046 - src.data_preparation - INFO - Dividindo dados em treino, calibra��o e teste
+2026-01-08 15:01:59,051 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:01:59,052 - src.data_preparation - INFO - Calibra��o: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:01:59,053 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:01:59,059 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:01:59,059 - __main__ - INFO - ETAPA 2: PREVIS�O PROBABIL�STICA
+2026-01-08 15:01:59,060 - __main__ - INFO - ================================================================================
+2026-01-08 15:01:59,060 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:01:59,060 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:02:00,444 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:02:00,507 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:02:00,563 - src.forecasting - INFO - Treinamento conclu�do
+2026-01-08 15:02:00,564 - src.forecasting - INFO - Calibrando intervalos com alpha=0.1
+2026-01-08 15:02:00,571 - src.forecasting - INFO - Corre��o conformal: 0.89
+2026-01-08 15:02:00,586 - src.forecasting - INFO - Avaliando previs�es
+2026-01-08 15:02:00,587 - src.forecasting - INFO - M�tricas de previs�o:
+2026-01-08 15:02:00,588 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:02:00,588 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:02:00,588 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:02:00,588 - src.forecasting - INFO -   Coverage (%): 77.29
+2026-01-08 15:02:00,588 - src.forecasting - INFO -   Avg Interval Width: 22.27
+2026-01-08 15:02:00,590 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:02:00,590 - __main__ - INFO - ETAPA 3: OTIMIZA��O DE ALOCA��O
+2026-01-08 15:02:00,591 - __main__ - INFO - ================================================================================
+2026-01-08 15:02:00,598 - src.optimization - INFO - Gerando 1000 cen�rios de demanda
+2026-01-08 15:02:00,609 - src.optimization - INFO - Cen�rios gerados: shape (1000, 9)
+2026-01-08 15:02:00,609 - src.optimization - INFO - Resolvendo otimiza��o CVaR com alpha=0.1
+2026-01-08 15:02:04,197 - src.optimization - INFO - Otimiza��o bem-sucedida
+2026-01-08 15:02:04,197 - src.optimization - INFO -   CVaR: 274.42
+2026-01-08 15:02:04,197 - src.optimization - INFO -   Custo esperado: 198.46
+2026-01-08 15:02:04,197 - src.optimization - INFO -   Pior caso: 332.76
+2026-01-08 15:02:04,258 - src.optimization - INFO - Avaliando decis�es de aloca��o
+2026-01-08 15:02:04,332 - src.optimization - INFO - M�tricas de decis�o:
+2026-01-08 15:02:04,333 - src.optimization - INFO -   CVaR Cost (avg): 1306.64
+2026-01-08 15:02:04,333 - src.optimization - INFO -   Mean Baseline Cost: 443.03
+2026-01-08 15:02:04,333 - src.optimization - INFO -   Newsvendor Cost: 394.95
+2026-01-08 15:02:04,333 - src.optimization - INFO -   Quantile Cost: 442.26
+2026-01-08 15:02:04,334 - src.optimization - INFO -   CVaR Service Level (%): 62.46
+2026-01-08 15:02:04,334 - src.optimization - INFO -   Savings vs Mean (%): -194.93
+2026-01-08 15:02:04,334 - src.optimization - INFO -   Savings vs Newsvendor (%): -230.84
+2026-01-08 15:02:04,336 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:02:04,336 - __main__ - INFO - ETAPA 4: GERA��O DE VISUALIZA��ES E RELAT�RIOS
+2026-01-08 15:02:04,337 - __main__ - INFO - ================================================================================
+2026-01-08 15:02:04,338 - src.visualization - INFO - Gerando gr�ficos de intervalos de previs�o
+2026-01-08 15:02:09,073 - src.visualization - INFO - Gr�fico salvo em outputs\figures\forecast_intervals.png
+2026-01-08 15:02:09,083 - src.visualization - INFO - Gerando an�lise de coverage
+2026-01-08 15:02:09,615 - src.visualization - INFO - Gr�fico salvo em outputs\figures\coverage_analysis.png
+2026-01-08 15:02:09,625 - src.visualization - INFO - Gerando compara��o de decis�es
+2026-01-08 15:02:09,895 - src.visualization - INFO - Gr�fico salvo em outputs\figures\decision_comparison.png
+2026-01-08 15:02:09,921 - src.visualization - INFO - Gerando relat�rio
+2026-01-08 15:02:09,924 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:02:09,925 - __main__ - INFO - PIPELINE CONCLU�DO COM SUCESSO!
+2026-01-08 15:02:09,925 - __main__ - INFO - ================================================================================
+2026-01-08 15:02:09,925 - __main__ - INFO - 
+Resultados dispon�veis em:
+2026-01-08 15:02:09,925 - __main__ - INFO -   - outputs/figures/
+2026-01-08 15:02:09,925 - __main__ - INFO -   - outputs/results/
+2026-01-08 15:02:09,926 - __main__ - INFO -   - outputs/report.md
+2026-01-08 15:02:09,926 - __main__ - INFO - 
+Log completo salvo em: pipeline.log
+2026-01-08 15:09:58,144 - __main__ - INFO - ================================================================================
+2026-01-08 15:09:58,144 - __main__ - INFO - INICIANDO PIPELINE DE ALOCACAO OTIMA
+2026-01-08 15:09:58,145 - __main__ - INFO - ================================================================================
+2026-01-08 15:09:58,145 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:09:58,145 - __main__ - INFO - ETAPA 1: PREPARACAO DE DADOS
+2026-01-08 15:09:58,145 - __main__ - INFO - ================================================================================
+2026-01-08 15:09:58,146 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:09:58,154 - src.data_preparation - INFO - Dados carregados:  5418 observações, 9 produtos
+2026-01-08 15:09:58,155 - src.data_preparation - INFO - Período: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:09:58,155 - src.data_preparation - INFO - Criando features
+2026-01-08 15:09:58,222 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:09:58,222 - src.data_preparation - INFO - Dividindo dados em treino, calibração e teste
+2026-01-08 15:09:58,227 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:09:58,228 - src.data_preparation - INFO - Calibração: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:09:58,229 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:09:58,231 - __main__ - INFO - [OK] Preparacao de dados concluida com sucesso
+2026-01-08 15:09:58,232 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:09:58,232 - __main__ - INFO - ETAPA 2: PREVISAO PROBABILISTICA
+2026-01-08 15:09:58,232 - __main__ - INFO - ================================================================================
+2026-01-08 15:09:58,232 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:09:58,233 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:09:59,623 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:09:59,690 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:09:59,745 - src.forecasting - INFO - Treinamento concluído
+2026-01-08 15:09:59,745 - src.forecasting - INFO - Calibrando intervalos com alpha=0.1
+2026-01-08 15:09:59,752 - src.forecasting - INFO - Correcao conformal: 0.89
+2026-01-08 15:09:59,752 - src.forecasting - INFO - Quantile level usado: 0.9016
+2026-01-08 15:09:59,768 - src.forecasting - INFO - Avaliando previsões
+2026-01-08 15:09:59,769 - src.forecasting - INFO - Métricas de previsão:
+2026-01-08 15:09:59,769 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:09:59,770 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:09:59,770 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:09:59,770 - src.forecasting - INFO -   Coverage (%): 77.29
+2026-01-08 15:09:59,770 - src.forecasting - INFO -   Avg Interval Width: 22.27
+2026-01-08 15:09:59,770 - __main__ - INFO - [OK] Previsao concluida com sucesso
+2026-01-08 15:09:59,770 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:09:59,770 - __main__ - INFO - ETAPA 3: OTIMIZACAO DE ALOCACAO
+2026-01-08 15:09:59,771 - __main__ - INFO - ================================================================================
+2026-01-08 15:09:59,777 - __main__ - INFO - Previsoes agregadas por produto (periodo total):
+2026-01-08 15:09:59,777 - __main__ - INFO -   Camarao 36/40 120G: point=8833.4
+2026-01-08 15:09:59,777 - __main__ - INFO -   Camarao 36/40 200G: point=17788.9
+2026-01-08 15:09:59,778 - __main__ - INFO -   FILE DE TILAPIA 170G: point=6787.3
+2026-01-08 15:09:59,778 - __main__ - INFO -   File de Robalo 170G: point=4436.0
+2026-01-08 15:09:59,778 - __main__ - INFO -   File de robalo (moqueca) 300G: point=1253.5
+2026-01-08 15:09:59,778 - __main__ - INFO -   Fileto 100G: point=6445.5
+2026-01-08 15:09:59,779 - __main__ - INFO -   Parmegiana 150G: point=2901.3
+2026-01-08 15:09:59,779 - __main__ - INFO -   TILAPIA 300G: point=322.1
+2026-01-08 15:09:59,779 - __main__ - INFO -   Tournedour 150G: point=6520.5
+2026-01-08 15:09:59,779 - src.optimization - INFO - Gerando 1000 cenários de demanda
+2026-01-08 15:09:59,787 - src.optimization - INFO - Cenários gerados: shape (1000, 9)
+2026-01-08 15:09:59,787 - src.optimization - INFO - Resolvendo otimização CVaR com alpha=0.1
+2026-01-08 15:10:03,407 - src.optimization - INFO - Otimização bem-sucedida
+2026-01-08 15:10:03,408 - src.optimization - INFO -   CVaR: 68879.05
+2026-01-08 15:10:03,408 - src.optimization - INFO -   Custo esperado: 49812.59
+2026-01-08 15:10:03,408 - src.optimization - INFO -   Pior caso: 83477.82
+2026-01-08 15:10:03,476 - src.optimization - INFO - Avaliando decisoes de alocacao
+2026-01-08 15:10:03,477 - __main__ - ERROR - [ERRO] Erro na otimizacao: Unalignable boolean Series provided as indexer (index of the boolean Series and of the indexed object do not match).
+2026-01-08 15:12:14,102 - __main__ - INFO - ================================================================================
+2026-01-08 15:12:14,103 - __main__ - INFO - INICIANDO PIPELINE DE ALOCACAO OTIMA
+2026-01-08 15:12:14,103 - __main__ - INFO - ================================================================================
+2026-01-08 15:12:14,103 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:12:14,103 - __main__ - INFO - ETAPA 1: PREPARACAO DE DADOS
+2026-01-08 15:12:14,104 - __main__ - INFO - ================================================================================
+2026-01-08 15:12:14,104 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:12:14,114 - src.data_preparation - INFO - Dados carregados:  5418 observações, 9 produtos
+2026-01-08 15:12:14,115 - src.data_preparation - INFO - Período: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:12:14,115 - src.data_preparation - INFO - Criando features
+2026-01-08 15:12:14,188 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:12:14,189 - src.data_preparation - INFO - Dividindo dados em treino, calibração e teste
+2026-01-08 15:12:14,195 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:12:14,196 - src.data_preparation - INFO - Calibração: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:12:14,197 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:12:14,200 - __main__ - INFO - [OK] Preparacao de dados concluida com sucesso
+2026-01-08 15:12:14,200 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:12:14,200 - __main__ - INFO - ETAPA 2: PREVISAO PROBABILISTICA
+2026-01-08 15:12:14,200 - __main__ - INFO - ================================================================================
+2026-01-08 15:12:14,201 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:12:14,201 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:12:15,669 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:12:15,736 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:12:15,804 - src.forecasting - INFO - Treinamento concluído
+2026-01-08 15:12:15,804 - src.forecasting - INFO - Calibrando intervalos com alpha=0.1
+2026-01-08 15:12:15,811 - src.forecasting - INFO - Correcao conformal: 0.89
+2026-01-08 15:12:15,811 - src.forecasting - INFO - Quantile level usado: 0.9016
+2026-01-08 15:12:15,828 - src.forecasting - INFO - Avaliando previsões
+2026-01-08 15:12:15,829 - src.forecasting - INFO - Métricas de previsão:
+2026-01-08 15:12:15,829 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:12:15,829 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:12:15,829 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:12:15,830 - src.forecasting - INFO -   Coverage (%): 77.29
+2026-01-08 15:12:15,830 - src.forecasting - INFO -   Avg Interval Width: 22.27
+2026-01-08 15:12:15,830 - __main__ - INFO - [OK] Previsao concluida com sucesso
+2026-01-08 15:12:15,830 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:12:15,830 - __main__ - INFO - ETAPA 3: OTIMIZACAO DE ALOCACAO
+2026-01-08 15:12:15,831 - __main__ - INFO - ================================================================================
+2026-01-08 15:12:15,841 - __main__ - INFO - Previsoes agregadas por produto (periodo total):
+2026-01-08 15:12:15,841 - __main__ - INFO -   Camarao 36/40 120G: point=8833.4
+2026-01-08 15:12:15,841 - __main__ - INFO -   Camarao 36/40 200G: point=17788.9
+2026-01-08 15:12:15,842 - __main__ - INFO -   FILE DE TILAPIA 170G: point=6787.3
+2026-01-08 15:12:15,842 - __main__ - INFO -   File de Robalo 170G: point=4436.0
+2026-01-08 15:12:15,842 - __main__ - INFO -   File de robalo (moqueca) 300G: point=1253.5
+2026-01-08 15:12:15,842 - __main__ - INFO -   Fileto 100G: point=6445.5
+2026-01-08 15:12:15,843 - __main__ - INFO -   Parmegiana 150G: point=2901.3
+2026-01-08 15:12:15,843 - __main__ - INFO -   TILAPIA 300G: point=322.1
+2026-01-08 15:12:15,843 - __main__ - INFO -   Tournedour 150G: point=6520.5
+2026-01-08 15:12:15,843 - src.optimization - INFO - Gerando 1000 cenários de demanda
+2026-01-08 15:12:15,855 - src.optimization - INFO - Cenários gerados: shape (1000, 9)
+2026-01-08 15:12:15,855 - src.optimization - INFO - Resolvendo otimização CVaR com alpha=0.1
+2026-01-08 15:12:19,664 - src.optimization - INFO - Otimização bem-sucedida
+2026-01-08 15:12:19,664 - src.optimization - INFO -   CVaR: 68879.05
+2026-01-08 15:12:19,664 - src.optimization - INFO -   Custo esperado: 49812.59
+2026-01-08 15:12:19,665 - src.optimization - INFO -   Pior caso: 83477.82
+2026-01-08 15:12:19,730 - src.optimization - INFO - Avaliando decisoes de alocacao
+2026-01-08 15:12:19,738 - src.optimization - INFO - Metricas de decisao (periodo total):
+2026-01-08 15:12:19,738 - src.optimization - INFO -   Demanda real total: 54398.0
+2026-01-08 15:12:19,738 - src.optimization - INFO -   Alocacao CVaR total: 67844.0
+2026-01-08 15:12:19,739 - src.optimization - INFO - 
+Comparacao por produto:
+2026-01-08 15:12:19,739 - src.optimization - INFO -   Camarao 36/40 120G:
+2026-01-08 15:12:19,739 - src.optimization - INFO -     Real: 8767.0 | CVaR: 10473.0 | Mean: 8833.4
+2026-01-08 15:12:19,739 - src.optimization - INFO -   Camarao 36/40 200G:
+2026-01-08 15:12:19,740 - src.optimization - INFO -     Real: 17835.0 | CVaR: 19895.3 | Mean: 17788.9
+2026-01-08 15:12:19,740 - src.optimization - INFO -   FILE DE TILAPIA 170G:
+2026-01-08 15:12:19,740 - src.optimization - INFO -     Real: 6850.0 | CVaR: 8601.6 | Mean: 6787.3
+2026-01-08 15:12:19,741 - src.optimization - INFO -   File de Robalo 170G:
+2026-01-08 15:12:19,741 - src.optimization - INFO -     Real: 4049.0 | CVaR: 5466.4 | Mean: 4436.0
+2026-01-08 15:12:19,741 - src.optimization - INFO -   File de robalo (moqueca) 300G:
+2026-01-08 15:12:19,741 - src.optimization - INFO -     Real: 1022.0 | CVaR: 1827.5 | Mean: 1253.5
+2026-01-08 15:12:19,742 - src.optimization - INFO -   Fileto 100G:
+2026-01-08 15:12:19,742 - src.optimization - INFO -     Real: 6090.0 | CVaR: 8091.8 | Mean: 6445.5
+2026-01-08 15:12:19,742 - src.optimization - INFO -   Parmegiana 150G:
+2026-01-08 15:12:19,742 - src.optimization - INFO -     Real: 2719.0 | CVaR: 4146.6 | Mean: 2901.3
+2026-01-08 15:12:19,742 - src.optimization - INFO -   TILAPIA 300G:
+2026-01-08 15:12:19,742 - src.optimization - INFO -     Real: 281.0 | CVaR: 749.6 | Mean: 322.1
+2026-01-08 15:12:19,743 - src.optimization - INFO -   Tournedour 150G:
+2026-01-08 15:12:19,743 - src.optimization - INFO -     Real: 6785.0 | CVaR: 8592.3 | Mean: 6520.5
+2026-01-08 15:12:19,743 - src.optimization - INFO - 
+Resumo de custos:
+2026-01-08 15:12:19,743 - src.optimization - INFO -   CVaR Cost: 40337.96
+2026-01-08 15:12:19,743 - src.optimization - INFO -   Mean Baseline Cost: 7524.89
+2026-01-08 15:12:19,743 - src.optimization - INFO -   Newsvendor Cost: 48924.10
+2026-01-08 15:12:19,743 - src.optimization - INFO -   Quantile Cost: 83758.84
+2026-01-08 15:12:19,744 - src.optimization - INFO -   CVaR Service Level (%): 100.00
+2026-01-08 15:12:19,744 - src.optimization - INFO -   Savings vs Mean (%): -436.06
+2026-01-08 15:12:19,744 - src.optimization - INFO -   Savings vs Newsvendor (%): 17.55
+2026-01-08 15:12:19,744 - __main__ - INFO - [OK] Otimizacao concluida com sucesso
+2026-01-08 15:12:19,744 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:12:19,745 - __main__ - INFO - ETAPA 4: GERACAO DE VISUALIZACOES E RELATORIOS
+2026-01-08 15:12:19,745 - __main__ - INFO - ================================================================================
+2026-01-08 15:12:19,745 - src.visualization - INFO - Gerando gráficos de intervalos de previsão
+2026-01-08 15:12:21,939 - src.visualization - INFO - Gráfico salvo em outputs\figures\forecast_intervals.png
+2026-01-08 15:12:21,949 - src.visualization - INFO - Gerando análise de coverage
+2026-01-08 15:12:22,439 - src.visualization - INFO - Gráfico salvo em outputs\figures\coverage_analysis.png
+2026-01-08 15:12:22,448 - src.visualization - INFO - Gerando comparação de decisões
+2026-01-08 15:12:22,448 - __main__ - ERROR - [ERRO] Erro na visualizacao: 'CVaR Cost (avg)'
+2026-01-08 15:14:43,714 - __main__ - INFO - ================================================================================
+2026-01-08 15:14:43,715 - __main__ - INFO - INICIANDO PIPELINE DE ALOCACAO OTIMA
+2026-01-08 15:14:43,715 - __main__ - INFO - ================================================================================
+2026-01-08 15:14:43,715 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:14:43,715 - __main__ - INFO - ETAPA 1: PREPARACAO DE DADOS
+2026-01-08 15:14:43,715 - __main__ - INFO - ================================================================================
+2026-01-08 15:14:43,716 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:14:43,725 - src.data_preparation - INFO - Dados carregados:  5418 observações, 9 produtos
+2026-01-08 15:14:43,726 - src.data_preparation - INFO - Período: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:14:43,726 - src.data_preparation - INFO - Criando features
+2026-01-08 15:14:43,802 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:14:43,802 - src.data_preparation - INFO - Dividindo dados em treino, calibração e teste
+2026-01-08 15:14:43,809 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:14:43,810 - src.data_preparation - INFO - Calibração: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:14:43,810 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:14:43,813 - __main__ - INFO - [OK] Preparacao de dados concluida com sucesso
+2026-01-08 15:14:43,814 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:14:43,814 - __main__ - INFO - ETAPA 2: PREVISAO PROBABILISTICA
+2026-01-08 15:14:43,814 - __main__ - INFO - ================================================================================
+2026-01-08 15:14:43,814 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:14:43,814 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:14:45,233 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:14:45,290 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:14:45,342 - src.forecasting - INFO - Treinamento concluído
+2026-01-08 15:14:45,342 - src.forecasting - INFO - Calibrando intervalos com alpha=0.1
+2026-01-08 15:14:45,351 - src.forecasting - INFO - Correcao conformal: 0.89
+2026-01-08 15:14:45,351 - src.forecasting - INFO - Quantile level usado: 0.9016
+2026-01-08 15:14:45,368 - src.forecasting - INFO - Avaliando previsões
+2026-01-08 15:14:45,368 - src.forecasting - INFO - Métricas de previsão:
+2026-01-08 15:14:45,369 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:14:45,369 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:14:45,369 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:14:45,369 - src.forecasting - INFO -   Coverage (%): 77.29
+2026-01-08 15:14:45,369 - src.forecasting - INFO -   Avg Interval Width: 22.27
+2026-01-08 15:14:45,370 - __main__ - INFO - [OK] Previsao concluida com sucesso
+2026-01-08 15:14:45,370 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:14:45,370 - __main__ - INFO - ETAPA 3: OTIMIZACAO DE ALOCACAO
+2026-01-08 15:14:45,370 - __main__ - INFO - ================================================================================
+2026-01-08 15:14:45,379 - __main__ - INFO - Previsoes agregadas por produto (periodo total):
+2026-01-08 15:14:45,380 - __main__ - INFO -   Camarao 36/40 120G: point=8833.4
+2026-01-08 15:14:45,380 - __main__ - INFO -   Camarao 36/40 200G: point=17788.9
+2026-01-08 15:14:45,380 - __main__ - INFO -   FILE DE TILAPIA 170G: point=6787.3
+2026-01-08 15:14:45,381 - __main__ - INFO -   File de Robalo 170G: point=4436.0
+2026-01-08 15:14:45,381 - __main__ - INFO -   File de robalo (moqueca) 300G: point=1253.5
+2026-01-08 15:14:45,381 - __main__ - INFO -   Fileto 100G: point=6445.5
+2026-01-08 15:14:45,381 - __main__ - INFO -   Parmegiana 150G: point=2901.3
+2026-01-08 15:14:45,381 - __main__ - INFO -   TILAPIA 300G: point=322.1
+2026-01-08 15:14:45,382 - __main__ - INFO -   Tournedour 150G: point=6520.5
+2026-01-08 15:14:45,382 - src.optimization - INFO - Gerando 1000 cenários de demanda
+2026-01-08 15:14:45,392 - src.optimization - INFO - Cenários gerados: shape (1000, 9)
+2026-01-08 15:14:45,392 - src.optimization - INFO - Resolvendo otimização CVaR com alpha=0.1
+2026-01-08 15:14:49,125 - src.optimization - INFO - Otimização bem-sucedida
+2026-01-08 15:14:49,126 - src.optimization - INFO -   CVaR: 68879.05
+2026-01-08 15:14:49,126 - src.optimization - INFO -   Custo esperado: 49812.59
+2026-01-08 15:14:49,126 - src.optimization - INFO -   Pior caso: 83477.82
+2026-01-08 15:14:49,198 - src.optimization - INFO - Avaliando decisoes de alocacao
+2026-01-08 15:14:49,211 - src.optimization - INFO - Metricas de decisao (periodo total):
+2026-01-08 15:14:49,211 - src.optimization - INFO -   Demanda real total: 54398.0
+2026-01-08 15:14:49,212 - src.optimization - INFO -   Alocacao CVaR total: 67844.0
+2026-01-08 15:14:49,212 - src.optimization - INFO - 
+Comparacao por produto:
+2026-01-08 15:14:49,212 - src.optimization - INFO -   Camarao 36/40 120G:
+2026-01-08 15:14:49,212 - src.optimization - INFO -     Real: 8767.0 | CVaR: 10473.0 | Mean: 8833.4
+2026-01-08 15:14:49,213 - src.optimization - INFO -   Camarao 36/40 200G:
+2026-01-08 15:14:49,213 - src.optimization - INFO -     Real: 17835.0 | CVaR: 19895.3 | Mean: 17788.9
+2026-01-08 15:14:49,213 - src.optimization - INFO -   FILE DE TILAPIA 170G:
+2026-01-08 15:14:49,213 - src.optimization - INFO -     Real: 6850.0 | CVaR: 8601.6 | Mean: 6787.3
+2026-01-08 15:14:49,214 - src.optimization - INFO -   File de Robalo 170G:
+2026-01-08 15:14:49,214 - src.optimization - INFO -     Real: 4049.0 | CVaR: 5466.4 | Mean: 4436.0
+2026-01-08 15:14:49,214 - src.optimization - INFO -   File de robalo (moqueca) 300G:
+2026-01-08 15:14:49,214 - src.optimization - INFO -     Real: 1022.0 | CVaR: 1827.5 | Mean: 1253.5
+2026-01-08 15:14:49,215 - src.optimization - INFO -   Fileto 100G:
+2026-01-08 15:14:49,215 - src.optimization - INFO -     Real: 6090.0 | CVaR: 8091.8 | Mean: 6445.5
+2026-01-08 15:14:49,215 - src.optimization - INFO -   Parmegiana 150G:
+2026-01-08 15:14:49,215 - src.optimization - INFO -     Real: 2719.0 | CVaR: 4146.6 | Mean: 2901.3
+2026-01-08 15:14:49,216 - src.optimization - INFO -   TILAPIA 300G:
+2026-01-08 15:14:49,216 - src.optimization - INFO -     Real: 281.0 | CVaR: 749.6 | Mean: 322.1
+2026-01-08 15:14:49,216 - src.optimization - INFO -   Tournedour 150G:
+2026-01-08 15:14:49,216 - src.optimization - INFO -     Real: 6785.0 | CVaR: 8592.3 | Mean: 6520.5
+2026-01-08 15:14:49,216 - src.optimization - INFO - 
+Resumo de custos:
+2026-01-08 15:14:49,216 - src.optimization - INFO -   CVaR Cost: 40337.96
+2026-01-08 15:14:49,217 - src.optimization - INFO -   Mean Baseline Cost: 7524.89
+2026-01-08 15:14:49,217 - src.optimization - INFO -   Newsvendor Cost: 48924.10
+2026-01-08 15:14:49,217 - src.optimization - INFO -   Quantile Cost: 83758.84
+2026-01-08 15:14:49,217 - src.optimization - INFO -   CVaR Service Level (%): 100.00
+2026-01-08 15:14:49,217 - src.optimization - INFO -   Savings vs Mean (%): -436.06
+2026-01-08 15:14:49,217 - src.optimization - INFO -   Savings vs Newsvendor (%): 17.55
+2026-01-08 15:14:49,218 - __main__ - INFO - [OK] Otimizacao concluida com sucesso
+2026-01-08 15:14:49,218 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:14:49,218 - __main__ - INFO - ETAPA 4: GERACAO DE VISUALIZACOES E RELATORIOS
+2026-01-08 15:14:49,218 - __main__ - INFO - ================================================================================
+2026-01-08 15:14:49,219 - src.visualization - INFO - Gerando gráficos de intervalos de previsão
+2026-01-08 15:14:51,385 - src.visualization - INFO - Gráfico salvo em outputs\figures\forecast_intervals.png
+2026-01-08 15:14:51,393 - src.visualization - INFO - Gerando análise de coverage
+2026-01-08 15:14:51,853 - src.visualization - INFO - Gráfico salvo em outputs\figures\coverage_analysis.png
+2026-01-08 15:14:51,860 - src.visualization - INFO - Gerando comparação de decisões
+2026-01-08 15:14:52,133 - src.visualization - INFO - Gráfico salvo em outputs\figures\decision_comparison.png
+2026-01-08 15:14:52,158 - src.visualization - INFO - Gerando relatório
+2026-01-08 15:14:52,159 - src.visualization - INFO - Relatório salvo em outputs\report.md
+2026-01-08 15:14:52,159 - __main__ - INFO - [OK] Visualizacoes e relatorios gerados com sucesso
+2026-01-08 15:14:52,159 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:14:52,160 - __main__ - INFO - PIPELINE CONCLUIDO COM SUCESSO!
+2026-01-08 15:14:52,160 - __main__ - INFO - ================================================================================
+2026-01-08 15:14:52,160 - __main__ - INFO - 
+Resultados disponiveis em:
+2026-01-08 15:14:52,160 - __main__ - INFO -   - outputs/figures/
+2026-01-08 15:14:52,160 - __main__ - INFO -   - outputs/results/
+2026-01-08 15:14:52,160 - __main__ - INFO -   - outputs/report.md
+2026-01-08 15:14:52,161 - __main__ - INFO - 
+Log completo salvo em: pipeline.log
+2026-01-08 15:21:23,849 - __main__ - INFO - ================================================================================
+2026-01-08 15:21:23,849 - __main__ - INFO - INICIANDO PIPELINE DE ALOCACAO OTIMA
+2026-01-08 15:21:23,849 - __main__ - INFO - ================================================================================
+2026-01-08 15:21:23,849 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:21:23,850 - __main__ - INFO - ETAPA 1: PREPARACAO DE DADOS
+2026-01-08 15:21:23,850 - __main__ - INFO - ================================================================================
+2026-01-08 15:21:23,850 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:21:23,860 - src.data_preparation - INFO - Dados carregados:  5418 observações, 9 produtos
+2026-01-08 15:21:23,860 - src.data_preparation - INFO - Período: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:21:23,861 - src.data_preparation - INFO - Criando features
+2026-01-08 15:21:23,932 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:21:23,932 - src.data_preparation - INFO - Dividindo dados em treino, calibração e teste
+2026-01-08 15:21:23,939 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:21:23,940 - src.data_preparation - INFO - Calibração: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:21:23,941 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:21:23,944 - __main__ - INFO - [OK] Preparacao de dados concluida com sucesso
+2026-01-08 15:21:23,944 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:21:23,944 - __main__ - INFO - ETAPA 2: PREVISAO PROBABILISTICA
+2026-01-08 15:21:23,945 - __main__ - INFO - ================================================================================
+2026-01-08 15:21:23,945 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:21:23,945 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:21:25,381 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:21:25,454 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:21:25,516 - src.forecasting - INFO - Treinamento concluído
+2026-01-08 15:21:25,517 - src.forecasting - INFO - Calibrando intervalos com alpha=0.05
+2026-01-08 15:21:25,525 - src.forecasting - INFO - Correcao conformal: 3.12
+2026-01-08 15:21:25,525 - src.forecasting - INFO - Quantile level usado: 0.9526
+2026-01-08 15:21:25,543 - src.forecasting - INFO - Avaliando previsões
+2026-01-08 15:21:25,544 - src.forecasting - INFO - Métricas de previsão:
+2026-01-08 15:21:25,544 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:21:25,545 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:21:25,545 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:21:25,545 - src.forecasting - INFO -   Coverage (%): 86.59
+2026-01-08 15:21:25,545 - src.forecasting - INFO -   Avg Interval Width: 26.20
+2026-01-08 15:21:25,545 - __main__ - INFO - [OK] Previsao concluida com sucesso
+2026-01-08 15:21:25,545 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:21:25,546 - __main__ - INFO - ETAPA 3: OTIMIZACAO DE ALOCACAO
+2026-01-08 15:21:25,546 - __main__ - INFO - ================================================================================
+2026-01-08 15:21:25,553 - __main__ - INFO - Previsoes agregadas por produto (periodo total):
+2026-01-08 15:21:25,553 - __main__ - INFO -   Camarao 36/40 120G: point=8833.4
+2026-01-08 15:21:25,554 - __main__ - INFO -   Camarao 36/40 200G: point=17788.9
+2026-01-08 15:21:25,554 - __main__ - INFO -   FILE DE TILAPIA 170G: point=6787.3
+2026-01-08 15:21:25,554 - __main__ - INFO -   File de Robalo 170G: point=4436.0
+2026-01-08 15:21:25,554 - __main__ - INFO -   File de robalo (moqueca) 300G: point=1253.5
+2026-01-08 15:21:25,555 - __main__ - INFO -   Fileto 100G: point=6445.5
+2026-01-08 15:21:25,555 - __main__ - INFO -   Parmegiana 150G: point=2901.3
+2026-01-08 15:21:25,555 - __main__ - INFO -   TILAPIA 300G: point=322.1
+2026-01-08 15:21:25,555 - __main__ - INFO -   Tournedour 150G: point=6520.5
+2026-01-08 15:21:25,555 - src.optimization - INFO - Gerando 1000 cenários de demanda
+2026-01-08 15:21:25,568 - src.optimization - INFO - Cenários gerados: shape (1000, 9)
+2026-01-08 15:21:25,568 - src.optimization - INFO - Resolvendo otimização CVaR com alpha=0.1
+2026-01-08 15:21:29,379 - src.optimization - INFO - Otimização bem-sucedida
+2026-01-08 15:21:29,380 - src.optimization - INFO -   CVaR: 80630.24
+2026-01-08 15:21:29,380 - src.optimization - INFO -   Custo esperado: 58605.39
+2026-01-08 15:21:29,380 - src.optimization - INFO -   Pior caso: 99077.39
+2026-01-08 15:21:29,445 - src.optimization - INFO - Avaliando decisoes de alocacao
+2026-01-08 15:21:29,453 - src.optimization - INFO - Metricas de decisao (periodo total):
+2026-01-08 15:21:29,454 - src.optimization - INFO -   Demanda real total: 54398.0
+2026-01-08 15:21:29,454 - src.optimization - INFO -   Alocacao CVaR total: 70256.6
+2026-01-08 15:21:29,454 - src.optimization - INFO - 
+Comparacao por produto:
+2026-01-08 15:21:29,454 - src.optimization - INFO -   Camarao 36/40 120G:
+2026-01-08 15:21:29,454 - src.optimization - INFO -     Real: 8767.0 | CVaR: 10736.1 | Mean: 8833.4
+2026-01-08 15:21:29,455 - src.optimization - INFO -   Camarao 36/40 200G:
+2026-01-08 15:21:29,455 - src.optimization - INFO -     Real: 17835.0 | CVaR: 20174.4 | Mean: 17788.9
+2026-01-08 15:21:29,455 - src.optimization - INFO -   FILE DE TILAPIA 170G:
+2026-01-08 15:21:29,455 - src.optimization - INFO -     Real: 6850.0 | CVaR: 8938.2 | Mean: 6787.3
+2026-01-08 15:21:29,455 - src.optimization - INFO -   File de Robalo 170G:
+2026-01-08 15:21:29,456 - src.optimization - INFO -     Real: 4049.0 | CVaR: 5702.2 | Mean: 4436.0
+2026-01-08 15:21:29,456 - src.optimization - INFO -   File de robalo (moqueca) 300G:
+2026-01-08 15:21:29,456 - src.optimization - INFO -     Real: 1022.0 | CVaR: 2081.7 | Mean: 1253.5
+2026-01-08 15:21:29,456 - src.optimization - INFO -   Fileto 100G:
+2026-01-08 15:21:29,456 - src.optimization - INFO -     Real: 6090.0 | CVaR: 8389.1 | Mean: 6445.5
+2026-01-08 15:21:29,456 - src.optimization - INFO -   Parmegiana 150G:
+2026-01-08 15:21:29,456 - src.optimization - INFO -     Real: 2719.0 | CVaR: 4376.9 | Mean: 2901.3
+2026-01-08 15:21:29,456 - src.optimization - INFO -   TILAPIA 300G:
+2026-01-08 15:21:29,457 - src.optimization - INFO -     Real: 281.0 | CVaR: 956.1 | Mean: 322.1
+2026-01-08 15:21:29,457 - src.optimization - INFO -   Tournedour 150G:
+2026-01-08 15:21:29,457 - src.optimization - INFO -     Real: 6785.0 | CVaR: 8901.9 | Mean: 6520.5
+2026-01-08 15:21:29,457 - src.optimization - INFO - 
+Resumo de custos:
+2026-01-08 15:21:29,457 - src.optimization - INFO -   CVaR Cost: 47575.74
+2026-01-08 15:21:29,457 - src.optimization - INFO -   Mean Baseline Cost: 7524.89
+2026-01-08 15:21:29,457 - src.optimization - INFO -   Newsvendor Cost: 57938.78
+2026-01-08 15:21:29,457 - src.optimization - INFO -   Quantile Cost: 98917.77
+2026-01-08 15:21:29,458 - src.optimization - INFO -   CVaR Service Level (%): 100.00
+2026-01-08 15:21:29,458 - src.optimization - INFO -   Savings vs Mean (%): -532.24
+2026-01-08 15:21:29,458 - src.optimization - INFO -   Savings vs Newsvendor (%): 17.89
+2026-01-08 15:21:29,458 - __main__ - INFO - [OK] Otimizacao concluida com sucesso
+2026-01-08 15:21:29,458 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:21:29,458 - __main__ - INFO - ETAPA 4: GERACAO DE VISUALIZACOES E RELATORIOS
+2026-01-08 15:21:29,458 - __main__ - INFO - ================================================================================
+2026-01-08 15:21:29,459 - src.visualization - INFO - Gerando gráficos de intervalos de previsão
+2026-01-08 15:21:31,613 - src.visualization - INFO - Gráfico salvo em outputs\figures\forecast_intervals.png
+2026-01-08 15:21:31,629 - src.visualization - INFO - Gerando análise de coverage
+2026-01-08 15:21:32,098 - src.visualization - INFO - Gráfico salvo em outputs\figures\coverage_analysis.png
+2026-01-08 15:21:32,107 - src.visualization - INFO - Gerando comparação de decisões
+2026-01-08 15:21:32,372 - src.visualization - INFO - Gráfico salvo em outputs\figures\decision_comparison.png
+2026-01-08 15:21:32,397 - src.visualization - INFO - Gerando relatório
+2026-01-08 15:21:32,398 - src.visualization - INFO - Relatório salvo em outputs\report.md
+2026-01-08 15:21:32,398 - __main__ - INFO - [OK] Visualizacoes e relatorios gerados com sucesso
+2026-01-08 15:21:32,398 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:21:32,398 - __main__ - INFO - PIPELINE CONCLUIDO COM SUCESSO!
+2026-01-08 15:21:32,399 - __main__ - INFO - ================================================================================
+2026-01-08 15:21:32,399 - __main__ - INFO - 
+Resultados disponiveis em:
+2026-01-08 15:21:32,399 - __main__ - INFO -   - outputs/figures/
+2026-01-08 15:21:32,399 - __main__ - INFO -   - outputs/results/
+2026-01-08 15:21:32,399 - __main__ - INFO -   - outputs/report.md
+2026-01-08 15:21:32,400 - __main__ - INFO - 
+Log completo salvo em: pipeline.log
+2026-01-08 15:30:21,931 - __main__ - INFO - ================================================================================
+2026-01-08 15:30:21,932 - __main__ - INFO - INICIANDO PIPELINE DE ALOCACAO OTIMA
+2026-01-08 15:30:21,932 - __main__ - INFO - ================================================================================
+2026-01-08 15:30:21,932 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:30:21,933 - __main__ - INFO - ETAPA 1: PREPARACAO DE DADOS
+2026-01-08 15:30:21,933 - __main__ - INFO - ================================================================================
+2026-01-08 15:30:21,933 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:30:21,942 - src.data_preparation - INFO - Dados carregados:  5418 observações, 9 produtos
+2026-01-08 15:30:21,942 - src.data_preparation - INFO - Período: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:30:21,942 - src.data_preparation - INFO - Criando features
+2026-01-08 15:30:22,009 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:30:22,009 - src.data_preparation - INFO - Dividindo dados em treino, calibração e teste
+2026-01-08 15:30:22,015 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:30:22,015 - src.data_preparation - INFO - Calibração: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:30:22,016 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:30:22,018 - __main__ - INFO - [OK] Preparacao de dados concluida com sucesso
+2026-01-08 15:30:22,018 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:30:22,019 - __main__ - INFO - ETAPA 2: PREVISAO PROBABILISTICA
+2026-01-08 15:30:22,019 - __main__ - INFO - ================================================================================
+2026-01-08 15:30:22,019 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:30:22,019 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:30:23,423 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:30:23,493 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:30:23,546 - src.forecasting - INFO - Treinamento concluído
+2026-01-08 15:30:23,547 - src.forecasting - INFO - Calibrando intervalos com alpha=0.05
+2026-01-08 15:30:23,553 - src.forecasting - INFO - Correcao conformal: 3.12
+2026-01-08 15:30:23,553 - src.forecasting - INFO - Quantile level usado: 0.9526
+2026-01-08 15:30:23,572 - src.forecasting - INFO - Avaliando previsões
+2026-01-08 15:30:23,573 - src.forecasting - INFO - Métricas de previsão:
+2026-01-08 15:30:23,573 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:30:23,573 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:30:23,573 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:30:23,574 - src.forecasting - INFO -   Coverage (%): 86.59
+2026-01-08 15:30:23,574 - src.forecasting - INFO -   Avg Interval Width: 26.20
+2026-01-08 15:30:23,574 - __main__ - INFO - [OK] Previsao concluida com sucesso
+2026-01-08 15:30:23,574 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:30:23,574 - __main__ - INFO - ETAPA 3: OTIMIZACAO DE ALOCACAO
+2026-01-08 15:30:23,574 - __main__ - INFO - ================================================================================
+2026-01-08 15:30:23,581 - __main__ - INFO - Previsoes agregadas por produto (periodo total):
+2026-01-08 15:30:23,581 - __main__ - ERROR - [ERRO] Erro na otimizacao: Format specifier missing precision
+2026-01-08 15:31:00,705 - __main__ - INFO - ================================================================================
+2026-01-08 15:31:00,705 - __main__ - INFO - INICIANDO PIPELINE DE ALOCACAO OTIMA
+2026-01-08 15:31:00,706 - __main__ - INFO - ================================================================================
+2026-01-08 15:31:00,706 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:31:00,706 - __main__ - INFO - ETAPA 1: PREPARACAO DE DADOS
+2026-01-08 15:31:00,707 - __main__ - INFO - ================================================================================
+2026-01-08 15:31:00,707 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:31:00,718 - src.data_preparation - INFO - Dados carregados:  5418 observações, 9 produtos
+2026-01-08 15:31:00,719 - src.data_preparation - INFO - Período: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:31:00,719 - src.data_preparation - INFO - Criando features
+2026-01-08 15:31:00,796 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:31:00,797 - src.data_preparation - INFO - Dividindo dados em treino, calibração e teste
+2026-01-08 15:31:00,803 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:31:00,804 - src.data_preparation - INFO - Calibração: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:31:00,805 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:31:00,808 - __main__ - INFO - [OK] Preparacao de dados concluida com sucesso
+2026-01-08 15:31:00,808 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:31:00,808 - __main__ - INFO - ETAPA 2: PREVISAO PROBABILISTICA
+2026-01-08 15:31:00,809 - __main__ - INFO - ================================================================================
+2026-01-08 15:31:00,809 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:31:00,809 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:31:02,207 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:31:02,296 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:31:02,356 - src.forecasting - INFO - Treinamento concluído
+2026-01-08 15:31:02,357 - src.forecasting - INFO - Calibrando intervalos com alpha=0.05
+2026-01-08 15:31:02,366 - src.forecasting - INFO - Correcao conformal: 3.12
+2026-01-08 15:31:02,367 - src.forecasting - INFO - Quantile level usado: 0.9526
+2026-01-08 15:31:02,384 - src.forecasting - INFO - Avaliando previsões
+2026-01-08 15:31:02,385 - src.forecasting - INFO - Métricas de previsão:
+2026-01-08 15:31:02,385 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:31:02,385 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:31:02,386 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:31:02,386 - src.forecasting - INFO -   Coverage (%): 86.59
+2026-01-08 15:31:02,386 - src.forecasting - INFO -   Avg Interval Width: 26.20
+2026-01-08 15:31:02,386 - __main__ - INFO - [OK] Previsao concluida com sucesso
+2026-01-08 15:31:02,386 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:31:02,386 - __main__ - INFO - ETAPA 3: OTIMIZACAO DE ALOCACAO
+2026-01-08 15:31:02,386 - __main__ - INFO - ================================================================================
+2026-01-08 15:31:02,397 - __main__ - INFO - Previsoes agregadas por produto (periodo total):
+2026-01-08 15:31:02,397 - __main__ - INFO -   Camarao 36/40 120G: point=8833.4
+2026-01-08 15:31:02,397 - __main__ - INFO -   Camarao 36/40 200G: point=17788.9
+2026-01-08 15:31:02,398 - __main__ - INFO -   FILE DE TILAPIA 170G: point=6787.3
+2026-01-08 15:31:02,398 - __main__ - INFO -   File de Robalo 170G: point=4436.0
+2026-01-08 15:31:02,398 - __main__ - INFO -   File de robalo (moqueca) 300G: point=1253.5
+2026-01-08 15:31:02,398 - __main__ - INFO -   Fileto 100G: point=6445.5
+2026-01-08 15:31:02,398 - __main__ - INFO -   Parmegiana 150G: point=2901.3
+2026-01-08 15:31:02,399 - __main__ - INFO -   TILAPIA 300G: point=322.1
+2026-01-08 15:31:02,399 - __main__ - INFO -   Tournedour 150G: point=6520.5
+2026-01-08 15:31:02,399 - src.optimization - INFO - Gerando 1000 cenários de demanda
+2026-01-08 15:31:02,408 - src.optimization - INFO - Cenários gerados: shape (1000, 9)
+2026-01-08 15:31:02,408 - src.optimization - INFO - Resolvendo otimização CVaR com alpha=0.1
+2026-01-08 15:31:06,087 - src.optimization - INFO - Otimização bem-sucedida
+2026-01-08 15:31:06,088 - src.optimization - INFO -   CVaR: 80630.24
+2026-01-08 15:31:06,088 - src.optimization - INFO -   Custo esperado: 58605.39
+2026-01-08 15:31:06,088 - src.optimization - INFO -   Pior caso: 99077.39
+2026-01-08 15:31:06,163 - src.optimization - INFO - Avaliando decisoes de alocacao
+2026-01-08 15:31:06,171 - src.optimization - INFO - Metricas de decisao (periodo total):
+2026-01-08 15:31:06,172 - src.optimization - INFO -   Demanda real total: 54398.0
+2026-01-08 15:31:06,172 - src.optimization - INFO -   Alocacao CVaR total: 70256.6
+2026-01-08 15:31:06,172 - src.optimization - INFO - 
+Comparacao por produto:
+2026-01-08 15:31:06,172 - src.optimization - INFO -   Camarao 36/40 120G:
+2026-01-08 15:31:06,173 - src.optimization - INFO -     Real: 8767.0 | CVaR: 10736.1 | Mean: 8833.4
+2026-01-08 15:31:06,173 - src.optimization - INFO -   Camarao 36/40 200G:
+2026-01-08 15:31:06,173 - src.optimization - INFO -     Real: 17835.0 | CVaR: 20174.4 | Mean: 17788.9
+2026-01-08 15:31:06,173 - src.optimization - INFO -   FILE DE TILAPIA 170G:
+2026-01-08 15:31:06,174 - src.optimization - INFO -     Real: 6850.0 | CVaR: 8938.2 | Mean: 6787.3
+2026-01-08 15:31:06,174 - src.optimization - INFO -   File de Robalo 170G:
+2026-01-08 15:31:06,174 - src.optimization - INFO -     Real: 4049.0 | CVaR: 5702.2 | Mean: 4436.0
+2026-01-08 15:31:06,175 - src.optimization - INFO -   File de robalo (moqueca) 300G:
+2026-01-08 15:31:06,175 - src.optimization - INFO -     Real: 1022.0 | CVaR: 2081.7 | Mean: 1253.5
+2026-01-08 15:31:06,175 - src.optimization - INFO -   Fileto 100G:
+2026-01-08 15:31:06,175 - src.optimization - INFO -     Real: 6090.0 | CVaR: 8389.1 | Mean: 6445.5
+2026-01-08 15:31:06,175 - src.optimization - INFO -   Parmegiana 150G:
+2026-01-08 15:31:06,176 - src.optimization - INFO -     Real: 2719.0 | CVaR: 4376.9 | Mean: 2901.3
+2026-01-08 15:31:06,176 - src.optimization - INFO -   TILAPIA 300G:
+2026-01-08 15:31:06,176 - src.optimization - INFO -     Real: 281.0 | CVaR: 956.1 | Mean: 322.1
+2026-01-08 15:31:06,176 - src.optimization - INFO -   Tournedour 150G:
+2026-01-08 15:31:06,176 - src.optimization - INFO -     Real: 6785.0 | CVaR: 8901.9 | Mean: 6520.5
+2026-01-08 15:31:06,176 - src.optimization - INFO - 
+Resumo de custos:
+2026-01-08 15:31:06,177 - src.optimization - INFO -   CVaR Cost: 47575.74
+2026-01-08 15:31:06,177 - src.optimization - INFO -   Mean Baseline Cost: 7524.89
+2026-01-08 15:31:06,177 - src.optimization - INFO -   Newsvendor Cost: 57938.78
+2026-01-08 15:31:06,177 - src.optimization - INFO -   Quantile Cost: 98917.77
+2026-01-08 15:31:06,177 - src.optimization - INFO -   CVaR Service Level (%): 100.00
+2026-01-08 15:31:06,178 - src.optimization - INFO -   Savings vs Mean (%): -532.24
+2026-01-08 15:31:06,178 - src.optimization - INFO -   Savings vs Newsvendor (%): 17.89
+2026-01-08 15:31:06,178 - __main__ - INFO - [OK] Otimizacao concluida com sucesso
+2026-01-08 15:31:06,178 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:31:06,178 - __main__ - INFO - ETAPA 4: GERACAO DE VISUALIZACOES E RELATORIOS
+2026-01-08 15:31:06,179 - __main__ - INFO - ================================================================================
+2026-01-08 15:31:06,179 - src.visualization - INFO - Gerando gráficos de intervalos de previsão
+2026-01-08 15:31:08,240 - src.visualization - INFO - Gráfico salvo em outputs\figures\forecast_intervals.png
+2026-01-08 15:31:08,255 - src.visualization - INFO - Gerando análise de coverage
+2026-01-08 15:31:08,747 - src.visualization - INFO - Gráfico salvo em outputs\figures\coverage_analysis.png
+2026-01-08 15:31:08,757 - src.visualization - INFO - Gerando comparação de decisões
+2026-01-08 15:31:09,006 - src.visualization - INFO - Gráfico salvo em outputs\figures\decision_comparison.png
+2026-01-08 15:31:09,031 - src.visualization - INFO - Gerando relatório
+2026-01-08 15:31:09,033 - src.visualization - INFO - Relatório salvo em outputs\report.md
+2026-01-08 15:31:09,033 - __main__ - INFO - [OK] Visualizacoes e relatorios gerados com sucesso
+2026-01-08 15:31:09,033 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:31:09,033 - __main__ - INFO - VALIDACAO DOS RESULTADOS
+2026-01-08 15:31:09,033 - __main__ - INFO - ================================================================================
+2026-01-08 15:31:09,033 - __main__ - INFO - [OK] Coverage:  86.59 (target: >=85.00)
+2026-01-08 15:31:09,034 - __main__ - INFO - [OK] Service Level:  100.00 (target: >=90.00)
+2026-01-08 15:31:09,034 - __main__ - INFO - [OK] Savings vs Newsvendor:  17.89 (target: >=0.00)
+2026-01-08 15:31:09,034 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:31:09,034 - __main__ - INFO - PIPELINE CONCLUIDO COM SUCESSO!  TODOS OS CRITERIOS ATENDIDOS!
+2026-01-08 15:31:09,034 - __main__ - INFO - ================================================================================
+2026-01-08 15:31:09,034 - __main__ - INFO - 
+Resultados disponiveis em:
+2026-01-08 15:31:09,034 - __main__ - INFO -   - outputs\figures/
+2026-01-08 15:31:09,034 - __main__ - INFO -   - outputs\results/
+2026-01-08 15:31:09,035 - __main__ - INFO -   - outputs/report.md
+2026-01-08 15:31:09,035 - __main__ - INFO - 
+Log completo salvo em: pipeline.log
+2026-01-08 15:37:08,590 - __main__ - INFO - ================================================================================
+2026-01-08 15:37:08,590 - __main__ - INFO - INICIANDO PIPELINE DE ALOCACAO OTIMA
+2026-01-08 15:37:08,590 - __main__ - INFO - ================================================================================
+2026-01-08 15:37:08,591 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:37:08,591 - __main__ - INFO - ETAPA 1: PREPARACAO DE DADOS
+2026-01-08 15:37:08,591 - __main__ - INFO - ================================================================================
+2026-01-08 15:37:08,591 - src.data_preparation - INFO - Carregando dados de data/vendas.csv
+2026-01-08 15:37:08,600 - src.data_preparation - INFO - Dados carregados:  5418 observações, 9 produtos
+2026-01-08 15:37:08,600 - src.data_preparation - INFO - Período: 2024-01-16 00:00:00 a 2025-09-08 00:00:00
+2026-01-08 15:37:08,601 - src.data_preparation - INFO - Criando features
+2026-01-08 15:37:08,682 - src.data_preparation - INFO - Features criadas: 19 colunas
+2026-01-08 15:37:08,683 - src.data_preparation - INFO - Dividindo dados em treino, calibração e teste
+2026-01-08 15:37:08,688 - src.data_preparation - INFO - Treino: 3159 obs(2024-01-16 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:37:08,689 - src.data_preparation - INFO - Calibração: 549 obs(2024-11-01 00:00:00 a 2024-12-31 00:00:00)
+2026-01-08 15:37:08,690 - src.data_preparation - INFO - Teste: 2259 obs(2025-01-01 00:00:00 a 2025-09-08 00:00:00)
+2026-01-08 15:37:08,692 - __main__ - INFO - [OK] Preparacao de dados concluida com sucesso
+2026-01-08 15:37:08,692 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:37:08,692 - __main__ - INFO - ETAPA 2: PREVISAO PROBABILISTICA
+2026-01-08 15:37:08,693 - __main__ - INFO - ================================================================================
+2026-01-08 15:37:08,693 - src.forecasting - INFO - Treinando modelos para quantis [0.1, 0.5, 0.9]
+2026-01-08 15:37:08,693 - src.forecasting - INFO - Treinando modelo para quantil 0.1
+2026-01-08 15:37:10,067 - src.forecasting - INFO - Treinando modelo para quantil 0.5
+2026-01-08 15:37:10,122 - src.forecasting - INFO - Treinando modelo para quantil 0.9
+2026-01-08 15:37:10,180 - src.forecasting - INFO - Treinamento concluído
+2026-01-08 15:37:10,180 - src.forecasting - INFO - Calibrando intervalos com alpha=0.15
+2026-01-08 15:37:10,187 - src.forecasting - INFO - Correcao conformal: 0.13
+2026-01-08 15:37:10,187 - src.forecasting - INFO - Quantile level usado: 0.8525
+2026-01-08 15:37:10,204 - src.forecasting - INFO - Avaliando previsões
+2026-01-08 15:37:10,205 - src.forecasting - INFO - Métricas de previsão:
+2026-01-08 15:37:10,205 - src.forecasting - INFO -   MAE: 7.79
+2026-01-08 15:37:10,205 - src.forecasting - INFO -   RMSE: 12.18
+2026-01-08 15:37:10,205 - src.forecasting - INFO -   MAPE: 161.54
+2026-01-08 15:37:10,206 - src.forecasting - INFO -   Coverage (%): 71.36
+2026-01-08 15:37:10,206 - src.forecasting - INFO -   Avg Interval Width: 20.86
+2026-01-08 15:37:10,206 - __main__ - INFO - [OK] Previsao concluida com sucesso
+2026-01-08 15:37:10,206 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:37:10,206 - __main__ - INFO - ETAPA 3: OTIMIZACAO DE ALOCACAO
+2026-01-08 15:37:10,207 - __main__ - INFO - ================================================================================
+2026-01-08 15:37:10,213 - __main__ - INFO - Previsoes agregadas por produto (periodo total):
+2026-01-08 15:37:10,213 - __main__ - INFO -   Camarao 36/40 120G: point=8833.4
+2026-01-08 15:37:10,214 - __main__ - INFO -   Camarao 36/40 200G: point=17788.9
+2026-01-08 15:37:10,214 - __main__ - INFO -   FILE DE TILAPIA 170G: point=6787.3
+2026-01-08 15:37:10,214 - __main__ - INFO -   File de Robalo 170G: point=4436.0
+2026-01-08 15:37:10,215 - __main__ - INFO -   File de robalo (moqueca) 300G: point=1253.5
+2026-01-08 15:37:10,215 - __main__ - INFO -   Fileto 100G: point=6445.5
+2026-01-08 15:37:10,215 - __main__ - INFO -   Parmegiana 150G: point=2901.3
+2026-01-08 15:37:10,215 - __main__ - INFO -   TILAPIA 300G: point=322.1
+2026-01-08 15:37:10,216 - __main__ - INFO -   Tournedour 150G: point=6520.5
+2026-01-08 15:37:10,216 - src.optimization - INFO - Gerando 1000 cenários de demanda
+2026-01-08 15:37:10,228 - src.optimization - INFO - Cenários gerados: shape (1000, 9)
+2026-01-08 15:37:10,229 - src.optimization - INFO - Resolvendo otimização CVaR com alpha=0.1
+2026-01-08 15:37:13,950 - src.optimization - INFO - Otimização bem-sucedida
+2026-01-08 15:37:13,950 - src.optimization - INFO -   CVaR: 64699.41
+2026-01-08 15:37:13,950 - src.optimization - INFO -   Custo esperado: 46689.57
+2026-01-08 15:37:13,950 - src.optimization - INFO -   Pior caso: 77726.81
+2026-01-08 15:37:14,011 - src.optimization - INFO - Avaliando decisoes de alocacao
+2026-01-08 15:37:14,019 - src.optimization - INFO - Metricas de decisao (periodo total):
+2026-01-08 15:37:14,019 - src.optimization - INFO -   Demanda real total: 54398.0
+2026-01-08 15:37:14,020 - src.optimization - INFO -   Alocacao CVaR total: 67035.7
+2026-01-08 15:37:14,020 - src.optimization - INFO - 
+Comparacao por produto:
+2026-01-08 15:37:14,020 - src.optimization - INFO -   Camarao 36/40 120G:
+2026-01-08 15:37:14,020 - src.optimization - INFO -     Real: 8767.0 | CVaR: 10369.8 | Mean: 8833.4
+2026-01-08 15:37:14,020 - src.optimization - INFO -   Camarao 36/40 200G:
+2026-01-08 15:37:14,021 - src.optimization - INFO -     Real: 17835.0 | CVaR: 19804.6 | Mean: 17788.9
+2026-01-08 15:37:14,021 - src.optimization - INFO -   FILE DE TILAPIA 170G:
+2026-01-08 15:37:14,021 - src.optimization - INFO -     Real: 6850.0 | CVaR: 8481.8 | Mean: 6787.3
+2026-01-08 15:37:14,021 - src.optimization - INFO -   File de Robalo 170G:
+2026-01-08 15:37:14,021 - src.optimization - INFO -     Real: 4049.0 | CVaR: 5376.1 | Mean: 4436.0
+2026-01-08 15:37:14,022 - src.optimization - INFO -   File de robalo (moqueca) 300G:
+2026-01-08 15:37:14,022 - src.optimization - INFO -     Real: 1022.0 | CVaR: 1762.2 | Mean: 1253.5
+2026-01-08 15:37:14,022 - src.optimization - INFO -   Fileto 100G:
+2026-01-08 15:37:14,022 - src.optimization - INFO -     Real: 6090.0 | CVaR: 8003.8 | Mean: 6445.5
+2026-01-08 15:37:14,022 - src.optimization - INFO -   Parmegiana 150G:
+2026-01-08 15:37:14,022 - src.optimization - INFO -     Real: 2719.0 | CVaR: 4058.9 | Mean: 2901.3
+2026-01-08 15:37:14,022 - src.optimization - INFO -   TILAPIA 300G:
+2026-01-08 15:37:14,023 - src.optimization - INFO -     Real: 281.0 | CVaR: 664.1 | Mean: 322.1
+2026-01-08 15:37:14,023 - src.optimization - INFO -   Tournedour 150G:
+2026-01-08 15:37:14,023 - src.optimization - INFO -     Real: 6785.0 | CVaR: 8514.4 | Mean: 6520.5
+2026-01-08 15:37:14,023 - src.optimization - INFO - 
+Resumo de custos:
+2026-01-08 15:37:14,023 - src.optimization - INFO -   CVaR Cost: 37913.00
+2026-01-08 15:37:14,023 - src.optimization - INFO -   Mean Baseline Cost: 7524.89
+2026-01-08 15:37:14,023 - src.optimization - INFO -   Newsvendor Cost: 45991.24
+2026-01-08 15:37:14,023 - src.optimization - INFO -   Quantile Cost: 78613.17
+2026-01-08 15:37:14,024 - src.optimization - INFO -   CVaR Service Level (%): 100.00
+2026-01-08 15:37:14,024 - src.optimization - INFO -   Savings vs Mean (%): -403.83
+2026-01-08 15:37:14,024 - src.optimization - INFO -   Savings vs Newsvendor (%): 17.56
+2026-01-08 15:37:14,024 - __main__ - INFO - [OK] Otimizacao concluida com sucesso
+2026-01-08 15:37:14,024 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:37:14,024 - __main__ - INFO - ETAPA 4: GERACAO DE VISUALIZACOES E RELATORIOS
+2026-01-08 15:37:14,024 - __main__ - INFO - ================================================================================
+2026-01-08 15:37:14,025 - src.visualization - INFO - Gerando gráficos de intervalos de previsão
+2026-01-08 15:37:16,192 - src.visualization - INFO - Gráfico salvo em outputs\figures\forecast_intervals.png
+2026-01-08 15:37:16,207 - src.visualization - INFO - Gerando análise de coverage
+2026-01-08 15:37:16,687 - src.visualization - INFO - Gráfico salvo em outputs\figures\coverage_analysis.png
+2026-01-08 15:37:16,696 - src.visualization - INFO - Gerando comparação de decisões
+2026-01-08 15:37:16,979 - src.visualization - INFO - Gráfico salvo em outputs\figures\decision_comparison.png
+2026-01-08 15:37:17,006 - src.visualization - INFO - Gerando relatório
+2026-01-08 15:37:17,007 - src.visualization - INFO - Relatório salvo em outputs\report.md
+2026-01-08 15:37:17,008 - __main__ - INFO - [OK] Visualizacoes e relatorios gerados com sucesso
+2026-01-08 15:37:17,008 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:37:17,008 - __main__ - INFO - VALIDACAO DOS RESULTADOS
+2026-01-08 15:37:17,008 - __main__ - INFO - ================================================================================
+2026-01-08 15:37:17,008 - __main__ - INFO - [ATENCAO] Coverage:  71.36 (target: >=85.00)
+2026-01-08 15:37:17,009 - __main__ - INFO - [OK] Service Level:  100.00 (target: >=90.00)
+2026-01-08 15:37:17,009 - __main__ - INFO - [OK] Savings vs Newsvendor:  17.56 (target: >=0.00)
+2026-01-08 15:37:17,009 - __main__ - INFO - 
+================================================================================
+2026-01-08 15:37:17,009 - __main__ - INFO - PIPELINE CONCLUIDO!  ALGUNS CRITERIOS NECESSITAM ATENCAO.
+2026-01-08 15:37:17,010 - __main__ - INFO - ================================================================================
+2026-01-08 15:37:17,010 - __main__ - INFO - 
+Resultados disponiveis em:
+2026-01-08 15:37:17,010 - __main__ - INFO -   - outputs\figures/
+2026-01-08 15:37:17,010 - __main__ - INFO -   - outputs\results/
+2026-01-08 15:37:17,010 - __main__ - INFO -   - outputs/report.md
+2026-01-08 15:37:17,010 - __main__ - INFO - 
+Log completo salvo em: pipeline.log
