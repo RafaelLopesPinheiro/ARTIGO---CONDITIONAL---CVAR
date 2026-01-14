@@ -1,11 +1,12 @@
 """
 Módulo de previsão probabilística usando Conformal Prediction.
 Implementa quantile forecasting com LightGBM e intervalos conformais.
+UPDATED: Now supports multiple model types via BaseQuantileModel interface.
 """
 
 import numpy as np
 import pandas as pd
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Union
 import lightgbm as lgb
 from sklearn.base import BaseEstimator
 import logging
@@ -17,14 +18,16 @@ logger = logging.getLogger(__name__)
 class QuantileForecaster(BaseEstimator):
     """
     Forecaster baseado em quantis usando LightGBM.
+    DEPRECATED: Use models from src.models instead.
+    Kept for backward compatibility.
     """
     
-    def __init__(self, quantiles:  List[float] = [0.1, 0.5, 0.9], seed: int = 42, params: Dict = None):
+    def __init__(self, quantiles: List[float] = [0.1, 0.5, 0.9], seed: int = 42, params: Dict = None):
         """
         Args:
             quantiles: Lista de quantis para prever
             seed: Seed para reprodutibilidade
-            params:  Dicionário com parâmetros do LightGBM (opcional)
+            params: Dicionário com parâmetros do LightGBM (opcional)
         """
         self.quantiles = quantiles
         self.seed = seed
@@ -48,9 +51,9 @@ class QuantileForecaster(BaseEstimator):
             'max_depth': 5,
             'learning_rate':  0.05,
             'num_leaves': 31,
-            'min_child_samples':  20,
+            'min_child_samples': 20,
             'subsample': 0.8,
-            'colsample_bytree':  0.8,
+            'colsample_bytree': 0.8,
             'random_state': self.seed,
             'verbose': -1
         }
@@ -92,20 +95,23 @@ class QuantileForecaster(BaseEstimator):
 class ConformalPredictor:
     """
     Implementa Split Conformal Prediction para intervalos de previsão.
+    UPDATED: Now works with any model that implements predict() returning Dict[float, np.ndarray]
     """
     
     def __init__(self, seed: int = 42):
         """
         Args:
-            seed: Seed para reprodutibilidade
+            seed:  Seed para reprodutibilidade
         """
         self.seed = seed
         self.forecaster = None
         self.correction = None
+        self.quantiles = None
+        self.alpha = None
         
     def calibrate(
         self,
-        forecaster:  QuantileForecaster,
+        forecaster: Union[QuantileForecaster, BaseEstimator],  # Accept any model
         X_cal: pd.DataFrame,
         y_cal: pd.Series,
         alpha: float = 0.1
@@ -114,30 +120,34 @@ class ConformalPredictor:
         Calibra intervalos usando conjunto de calibração.
         
         Args:
-            forecaster: Modelo já treinado
-            X_cal:  Features de calibração
-            y_cal: Targets de calibração
-            alpha:  Nível de significância (1-alpha = coverage)
+            forecaster: Modelo já treinado (must have predict() method)
+            X_cal: Features de calibração
+            y_cal:  Targets de calibração
+            alpha: Nível de significância (1-alpha = cobertura desejada)
         """
         logger.info(f"Calibrando intervalos com alpha={alpha}")
         
         self.forecaster = forecaster
         self.alpha = alpha
+        self.quantiles = forecaster.quantiles
         
-        # Prever quantis no conjunto de calibração
-        cal_preds = forecaster.predict(X_cal)
+        # Obter predições de calibração
+        pred_dict = forecaster.predict(X_cal)
         
-        # Calcular nonconformity scores (max deviation)
-        scores = np.maximum(
-            cal_preds[0.1] - y_cal.values,
-            y_cal.values - cal_preds[0.9]
-        )
+        # Encontrar quantil inferior e superior
+        q_lower = min(self.quantiles)
+        q_upper = max(self.quantiles)
         
-        # FIX: Usar fórmula ajustada para melhor coverage
+        y_pred_lower = pred_dict[q_lower]
+        y_pred_upper = pred_dict[q_upper]
+        
+        # Calcular não-conformidade (non-conformity scores)
+        # Score = max(lower - y, y - upper)
+        scores = np.maximum(y_pred_lower - y_cal.values, y_cal.values - y_pred_upper)
+        
+        # Calcular quantil de correção conformal
         n = len(scores)
         q_level = np.ceil((n + 1) * (1 - alpha)) / n
-        q_level = min(q_level, 1.0)
-        
         self.correction = np.quantile(scores, q_level)
         
         logger.info(f"Correcao conformal: {self.correction:.2f}")
@@ -145,70 +155,101 @@ class ConformalPredictor:
         
         return self
     
-    def predict(self, X: pd.DataFrame) -> pd.DataFrame:
+    def predict(self, X:  pd.DataFrame) -> pd.DataFrame:
         """
-        Prevê com intervalos conformais.
+        Generate conformal prediction intervals.
         
-        Args:
-            X: Features
-            
         Returns:
-            DataFrame com colunas [lower, point, upper]
+            DataFrame with columns ['lower', 'point', 'upper'] and len(X) rows
         """
-        # Prever quantis base
-        preds = self.forecaster.predict(X)
+        # Get base quantile predictions (returns dict with keys 0.1, 0.5, 0.9)
+        base_preds = self.forecaster.predict(X)
         
-        # Aplicar correção conformal
-        lower = np.maximum(0, preds[0.1] - self.correction)
-        point = preds[0.5]
-        upper = preds[0.9] + self.correction
+        # ✅ FIX:  Ensure base_preds are arrays, not DataFrames
+        if isinstance(base_preds, dict):
+            # Extract values and ensure they're 1D arrays
+            lower_base = np.array(base_preds[0.1]).flatten()
+            point_base = np.array(base_preds[0.5]).flatten()
+            upper_base = np.array(base_preds[0.9]).flatten()
+        else:
+            raise ValueError(f"Expected dict from forecaster.predict(), got {type(base_preds)}")
         
+        # Apply conformal correction
+        lower = np.maximum(0, lower_base - self.correction)
+        point = point_base
+        upper = upper_base + self.correction
+        
+        # Create DataFrame with correct shape (n_samples, 3)
         result = pd.DataFrame({
             'lower': lower,
-            'point': point,
-            'upper':  upper
+            'point':  point,
+            'upper': upper
         })
+        
+        # ✅ VALIDATE: Check shape
+        if len(result) != len(X):
+            raise ValueError(f"Prediction shape mismatch: got {len(result)} rows, expected {len(X)}")
         
         return result
 
 
-def evaluate_forecast(y_true: pd.Series, predictions: pd.DataFrame) -> Dict[str, float]:
+def evaluate_forecast(y_true: pd.Series, predictions: pd.DataFrame) -> dict:
     """
-    Avalia qualidade das previsões.
+    Evaluate forecast quality. 
     
     Args:
-        y_true:  Valores reais
-        predictions: DataFrame com [lower, point, upper]
-        
-    Returns:
-        Dicionário com métricas
+        y_true:  Actual values
+        predictions: DataFrame with columns ['lower', 'point', 'upper']
+    
+    Returns: 
+        Dict with metrics
     """
-    logger.info("Avaliando previsões")
+    # ✅ FIX: Use 'point' instead of 'median'
+    y_pred = predictions['point']. values
+    y_true_values = y_true.values
     
-    y_true = y_true.values
-    point_pred = predictions['point'].values
-    lower = predictions['lower'].values
-    upper = predictions['upper'].values
+    # Calculate metrics
+    mae = np.mean(np.abs(y_true_values - y_pred))
+    rmse = np.sqrt(np.mean((y_true_values - y_pred)**2))
     
-    # Métricas pontuais
-    mae = np.mean(np.abs(y_true - point_pred))
-    rmse = np.sqrt(np.mean((y_true - point_pred) ** 2))
-    mape = np.mean(np.abs((y_true - point_pred) / (y_true + 1))) * 100  # +1 para evitar divisão por zero
+    # MAPE (avoid division by zero)
+    mape = np.mean(np.abs((y_true_values - y_pred) / np.maximum(y_true_values, 1e-10))) * 100
     
-    # Métricas de intervalo
-    coverage = np.mean((y_true >= lower) & (y_true <= upper)) * 100
-    avg_width = np.mean(upper - lower)
+    # Coverage
+    covered = (y_true_values >= predictions['lower'].values) & (y_true_values <= predictions['upper'].values)
+    coverage = covered.mean() * 100
     
-    metrics = {
+    # Average interval width
+    avg_width = (predictions['upper'].values - predictions['lower'].values).mean()
+    
+    return {
         'MAE': mae,
         'RMSE': rmse,
         'MAPE': mape,
         'Coverage (%)': coverage,
         'Avg Interval Width': avg_width
     }
+
+def validate_coverage(self, X_val, y_val):
+    """
+    Validate coverage on a held-out validation set.
+    Helps detect distribution shift.
+    """
+    predictions = self.predict(X_val)
+    covered = ((y_val >= predictions['lower']) & 
+               (y_val <= predictions['upper']))
+    actual_coverage = covered.mean()
+    target_coverage = 1 - self.alpha
     
-    logger.info("Métricas de previsão:")
-    for key, value in metrics.items():
-        logger.info(f"  {key}: {value:.2f}")
+    gap = actual_coverage - target_coverage
     
-    return metrics
+    logger.info(f"\n📊 Coverage Validation:")
+    logger.info(f"  Target: {target_coverage*100:.1f}%")
+    logger.info(f"  Actual: {actual_coverage*100:.1f}%")
+    logger.info(f"  Gap: {gap*100:+.1f}pp")
+    
+    if abs(gap) > 0.05:  # More than 5pp difference
+        logger.warning(f"⚠️  Coverage gap > 5pp detected!")
+        logger.warning(f"   Possible distribution shift between calibration and test")
+    
+    return actual_coverage

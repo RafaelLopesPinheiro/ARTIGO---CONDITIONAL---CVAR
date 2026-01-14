@@ -5,6 +5,71 @@ Permite fácil ajuste de parâmetros e experimentação.
 
 from pathlib import Path
 
+from src.models import *
+
+# ============================================================================
+# MULTI-MODEL CONFIGURATION
+# ============================================================================
+
+# Models to train and compare
+# Set 'enabled': True/False to include/exclude models
+
+MODELS_CONFIG = {
+    'LightGBM':{
+        'class':LightGBMQuantileModel,
+        'enabled':True,
+        'params': {
+            'n_estimators':200,
+            'max_depth': 5,
+            'learning_rate':0.05
+        }
+    },
+    'XGBoost':{
+        'class':XGBoostQuantileModel,
+        'enabled': True,
+        'params':{
+            'n_estimators': 200,
+            'max_depth':5,
+            'learning_rate':0.05
+        }
+    },
+    'CatBoost':{
+        'class':           CatBoostQuantileModel,
+        'enabled':True,
+        'params': {
+            'n_estimators':200,
+            'max_depth':5,
+            'learning_rate': 0.05
+        }
+    },
+    'RandomForest':{
+        'class':RandomForestQuantileModel,
+        'enabled':True,
+        'params':{
+            'n_estimators':200,
+            'max_depth':15
+        }
+    },
+    'LinearQuantile':{
+        'class':LinearQuantileModel,
+        'enabled':True,
+        'params':{
+            'alpha':0.01
+        }
+    },
+    'NeuralNetwork':{
+        'class':NeuralNetworkQuantileModel,
+        'enabled': True,
+        'params':{
+            'hidden_layers':(100, 50),
+            'max_iter':500
+        }
+    }
+}
+
+# Filter only enabled models
+ENABLED_MODELS = {k:v for k, v in MODELS_CONFIG.items() if v. get('enabled', True)}
+
 # ============================================================================
 # CONFIGURAÇÕES GERAIS
 # ============================================================================
@@ -24,18 +89,19 @@ LOG_FILE = 'pipeline.log'
 # ============================================================================
 
 # Divisão temporal
-TRAIN_END_DATE = '2024-12-31'
-TEST_START_DATE = '2025-01-01'
-CALIBRATION_MONTHS = 2  # Últimos N meses do treino para calibração
+TRAIN_END_DATE = '2024-08-31'        # Training:  Jan-Aug 2024
+CALIBRATION_END_DATE = '2024-12-31'  # Calibration: Sept-Dec 2024 (held-out!)
+TEST_START_DATE = '2025-01-01'       # Test: Jan 2025+
+CALIBRATION_MONTHS = 4                # 4 months (Sept-Dec)
 
 # ============================================================================
 # CONFORMAL PREDICTION
 # ============================================================================
 
-# Alpha: nível de significância (1-alpha = coverage desejado)
+# Alpha:nível de significância (1-alpha = coverage desejado)
 # Alpha = 0.10 → Coverage 90%
 # Alpha = 0.05 → Coverage 95%
-ALPHA_CONFORMAL = 0.15  # AJUSTADO para melhorar coverage
+ALPHA_CONFORMAL = 0.1  # AJUSTADO para melhorar coverage
 
 # Quantis para previsão
 QUANTILES = [0.1, 0.5, 0.9]
@@ -45,26 +111,26 @@ QUANTILES = [0.1, 0.5, 0.9]
 # ============================================================================
 
 LGBM_PARAMS = {
-    'objective': 'quantile',  # Será sobrescrito para cada quantil
-    'n_estimators': 200,
-    'max_depth': 5,
-    'learning_rate':  0.05,
-    'num_leaves': 31,
-    'min_child_samples':  20,
-    'subsample': 0.8,
-    'colsample_bytree':  0.8,
-    'random_state': SEED,
-    'verbose': -1
+    'objective':'quantile',  # Será sobrescrito para cada quantil
+    'n_estimators':200,
+    'max_depth':5,
+    'learning_rate': 0.05,
+    'num_leaves':31,
+    'min_child_samples': 20,
+    'subsample':0.8,
+    'colsample_bytree': 0.8,
+    'random_state':SEED,
+    'verbose':-1
 }
 
 # ============================================================================
 # OTIMIZAÇÃO CVaR
 # ============================================================================
 
-# Alpha CVaR: percentual dos piores cenários a considerar
+# Alpha CVaR:percentual dos piores cenários a considerar
 # Alpha = 0.10 → Otimiza para 10% piores cenários
 # Alpha = 0.05 → Otimiza para 5% piores cenários (mais conservador)
-ALPHA_CVAR = 0.1
+ALPHA_CVAR = 0.15
 
 # Número de cenários de demanda a gerar
 N_SCENARIOS = 1000
@@ -74,7 +140,7 @@ C_UNDERAGE = 10.0  # Custo de falta de estoque (por unidade)
 C_OVERAGE = 3.0    # Custo de excesso de estoque (por unidade)
 
 # Solver CVaR
-CVAR_SOLVER = 'ECOS'  # Opções: 'ECOS', 'SCS', 'CVXOPT'
+CVAR_SOLVER = 'ECOS'  # Opções:'ECOS', 'SCS', 'CVXOPT'
 CVAR_VERBOSE = False
 
 # ============================================================================
@@ -110,8 +176,8 @@ LAG_FEATURES = [1, 7, 30]
 
 # Features de rolling statistics
 ROLLING_WINDOWS = {
-    'short':  7,   # Janela curta
-    'long': 30    # Janela longa
+    'short': 7,   # Janela curta
+    'long':30    # Janela longa
 }
 
 # ============================================================================
@@ -126,7 +192,6 @@ PRODUCT_NAMES = [
     'File de robalo (moqueca) 300G',
     'Fileto 100G',
     'Parmegiana 150G',
-    'TILAPIA 300G',
     'Tournedour 150G'
 ]
 
@@ -162,9 +227,9 @@ SENSITIVITY_ANALYSIS = False
 
 # Diferentes cenários de custo para testar
 COST_SCENARIOS = [
-    {'name': 'Base', 'c_underage': 10.0, 'c_overage': 3.0},
-    {'name': 'High Shortage', 'c_underage':  15.0, 'c_overage': 3.0},
-    {'name':  'Balanced', 'c_underage':  7.0, 'c_overage': 5.0},
+    {'name':'Base', 'c_underage':10.0, 'c_overage':3.0},
+    {'name':'High Shortage', 'c_underage': 15.0, 'c_overage':3.0},
+    {'name': 'Balanced', 'c_underage': 7.0, 'c_overage':5.0},
 ]
 
 # ============================================================================
@@ -200,25 +265,25 @@ def validate_config():
     
     # Validar alpha
     if not 0 < ALPHA_CONFORMAL < 1:
-        errors.append(f"ALPHA_CONFORMAL deve estar entre 0 e 1, recebido: {ALPHA_CONFORMAL}")
+        errors.append(f"ALPHA_CONFORMAL deve estar entre 0 e 1, recebido:{ALPHA_CONFORMAL}")
     
     if not 0 < ALPHA_CVAR < 1:
-        errors.append(f"ALPHA_CVAR deve estar entre 0 e 1, recebido: {ALPHA_CVAR}")
+        errors.append(f"ALPHA_CVAR deve estar entre 0 e 1, recebido:{ALPHA_CVAR}")
     
     # Validar custos
     if C_UNDERAGE <= 0:
-        errors.append(f"C_UNDERAGE deve ser positivo, recebido: {C_UNDERAGE}")
+        errors.append(f"C_UNDERAGE deve ser positivo, recebido:{C_UNDERAGE}")
     
     if C_OVERAGE <= 0:
-        errors.append(f"C_OVERAGE deve ser positivo, recebido: {C_OVERAGE}")
+        errors.append(f"C_OVERAGE deve ser positivo, recebido:{C_OVERAGE}")
     
     # Validar paths
     if not Path(DATA_PATH).exists():
-        errors.append(f"Arquivo de dados não encontrado: {DATA_PATH}")
+        errors.append(f"Arquivo de dados não encontrado:{DATA_PATH}")
     
     # Validar quantis
     if not all(0 < q < 1 for q in QUANTILES):
-        errors.append(f"Todos os quantis devem estar entre 0 e 1: {QUANTILES}")
+        errors.append(f"Todos os quantis devem estar entre 0 e 1:{QUANTILES}")
     
     if errors:
         raise ValueError("Erros de configuração encontrados:\n" + "\n".join(f"  - {e}" for e in errors))
@@ -231,24 +296,24 @@ def print_config():
     print("\n" + "="*80)
     print("CONFIGURAÇÕES DO SISTEMA")
     print("="*80)
-    print(f"Seed: {SEED}")
-    print(f"Data:  {DATA_PATH}")
+    print(f"Seed:{SEED}")
+    print(f"Data: {DATA_PATH}")
     print(f"\nConformal Prediction:")
-    print(f"  - Alpha: {ALPHA_CONFORMAL} (Coverage target: {(1-ALPHA_CONFORMAL)*100:.0f}%)")
-    print(f"  - Quantis: {QUANTILES}")
+    print(f"  - Alpha:{ALPHA_CONFORMAL} (Coverage target:{(1-ALPHA_CONFORMAL)*100:.0f}%)")
+    print(f"  - Quantis:{QUANTILES}")
     print(f"\nCVaR Optimization:")
-    print(f"  - Alpha:  {ALPHA_CVAR} (Piores {ALPHA_CVAR*100:.0f}% cenários)")
-    print(f"  - Cenários: {N_SCENARIOS}")
-    print(f"  - Custo falta: R$ {C_UNDERAGE:.2f}")
-    print(f"  - Custo excesso: R$ {C_OVERAGE:.2f}")
+    print(f"  - Alpha: {ALPHA_CVAR} (Piores {ALPHA_CVAR*100:.0f}% cenários)")
+    print(f"  - Cenários:{N_SCENARIOS}")
+    print(f"  - Custo falta:R$ {C_UNDERAGE:.2f}")
+    print(f"  - Custo excesso:R$ {C_OVERAGE:.2f}")
     print(f"\nCritérios de Sucesso:")
-    print(f"  - Coverage: ≥{TARGET_COVERAGE:.0f}%")
-    print(f"  - Service Level: ≥{TARGET_SERVICE_LEVEL:.0f}%")
-    print(f"  - Savings: ≥{TARGET_SAVINGS:.0f}%")
+    print(f"  - Coverage:≥{TARGET_COVERAGE:.0f}%")
+    print(f"  - Service Level:≥{TARGET_SERVICE_LEVEL:.0f}%")
+    print(f"  - Savings:≥{TARGET_SAVINGS:.0f}%")
     print("="*80 + "\n")
 
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     # Validar configurações
     try:
         validate_config()

@@ -23,11 +23,11 @@ def generate_scenarios(
     Gera cenários de demanda a partir de intervalos de previsão.
     
     Args:
-        predictions: DataFrame com [lower, point, upper]
+        predictions:  DataFrame com colunas [lower, point, upper] e produtos como index
         n_scenarios: Número de cenários a gerar
         seed: Seed para reprodutibilidade
         
-    Returns: 
+    Returns:  
         Array (n_scenarios, n_products)
     """
     logger.info(f"Gerando {n_scenarios} cenários de demanda")
@@ -36,10 +36,10 @@ def generate_scenarios(
     n_products = len(predictions)
     scenarios = np.zeros((n_scenarios, n_products))
     
-    for i in range(n_products):
-        lower = predictions.iloc[i]['lower']
-        upper = predictions.iloc[i]['upper']
-        point = predictions.iloc[i]['point']
+    for i, (product, row) in enumerate(predictions.iterrows()):
+        lower = row['lower']
+        upper = row['upper']
+        point = row['point']
         
         # Estimar parâmetros da distribuição
         # Assumindo que point é a média e o intervalo cobre ~90%
@@ -51,7 +51,7 @@ def generate_scenarios(
         if std > 0:
             a = (lower - mean) / std
             b = (upper - mean) / std
-            scenarios[:, i] = truncnorm.rvs(a, b, loc=mean, scale=std, size=n_scenarios)
+            scenarios[: , i] = truncnorm.rvs(a, b, loc=mean, scale=std, size=n_scenarios)
         else:
             scenarios[:, i] = np.full(n_scenarios, mean)
         
@@ -63,7 +63,7 @@ def generate_scenarios(
     return scenarios
 
 
-class CVaROptimizer:
+class CVaROptimizer: 
     """
     Otimizador baseado em CVaR para alocação robusta de estoque.
     """
@@ -92,197 +92,184 @@ class CVaROptimizer:
         alpha: float = 0.1,
         solver: str = 'ECOS',
         verbose: bool = False
-    ) -> Dict:
+    ) -> Dict: 
         """
         Resolve problema de otimização CVaR.
         
         Args:
             scenarios: Array (n_scenarios, n_products) de demanda
-            alpha: Nível de CVaR (0.1 = 10% piores cenários)
-            solver: Solver CVXPY ('ECOS', 'SCS', 'CVXOPT')
-            verbose: Se True, exibe informações do solver
+            alpha: Percentual dos piores cenários (ex: 0.05 = 5% piores)
+            solver: Solver CVXPY a usar
+            verbose: Mostrar detalhes da otimização
             
         Returns: 
-            Dicionário com resultados da otimização
+            Dicionário com alocação ótima e métricas
         """
         logger.info(f"Resolvendo otimização CVaR com alpha={alpha}")
         
         n_scenarios, n_products = scenarios.shape
         
         # Variáveis de decisão
-        q = cp.Variable(n_products, nonneg=True)  # Quantidade a alocar
-        eta = cp.Variable()  # VaR
-        zeta = cp.Variable(n_scenarios, nonneg=True)  # Desvios acima do VaR
+        q = cp.Variable(n_products, nonneg=True)  # Quantidade alocada
+        eta = cp.Variable()  # VaR (valor no risco)
+        z = cp.Variable(n_scenarios, nonneg=True)  # Excesso sobre VaR
         
-        # Custos por cenário
+        # Calcular custos para cada cenário
         costs = []
         for s in range(n_scenarios):
-            underage = cp.maximum(scenarios[s, :] - q, 0)
-            overage = cp.maximum(q - scenarios[s, :], 0)
+            demand = scenarios[s, :]
+            
+            # Custo = custo_falta + custo_excesso
+            underage = cp.pos(demand - q)  # max(0, demand - q)
+            overage = cp.pos(q - demand)   # max(0, q - demand)
+            
             cost_s = self.c_underage * cp.sum(underage) + self.c_overage * cp.sum(overage)
             costs.append(cost_s)
         
-        # Restrições de CVaR
+        # CVaR = eta + (1/alpha) * E[max(custo - eta, 0)]
+        cvar = eta + (1 / (alpha * n_scenarios)) * cp.sum(z)
+        
+        # Restrições
         constraints = []
         for s in range(n_scenarios):
-            constraints.append(zeta[s] >= costs[s] - eta)
+            constraints.append(z[s] >= costs[s] - eta)
         
-        # Objetivo: minimizar CVaR
-        objective = cp.Minimize(
-            eta + (1 / (alpha * n_scenarios)) * cp.sum(zeta)
-        )
+        # Problema de otimização
+        problem = cp.Problem(cp.Minimize(cvar), constraints)
         
         # Resolver
-        problem = cp.Problem(objective, constraints)
-        
         try:
             problem.solve(solver=solver, verbose=verbose)
             
-            if problem.status == cp.OPTIMAL: 
-                self.q_optimal = q.value
-                self.optimal_cost = problem.value
-                
-                # Calcular métricas adicionais
-                expected_cost = np.mean([
-                    self._calculate_cost(self.q_optimal, scenarios[s, :])
-                    for s in range(n_scenarios)
-                ])
-                
-                worst_case_cost = np.max([
-                    self._calculate_cost(self.q_optimal, scenarios[s, :])
-                    for s in range(n_scenarios)
-                ])
-                
-                results = {
-                    'q_optimal': self.q_optimal,
-                    'cvar': self.optimal_cost,
-                    'expected_cost': expected_cost,
-                    'worst_case_cost': worst_case_cost,
-                    'status': problem.status
-                }
-                
-                logger.info(f"Otimização bem-sucedida")
-                logger.info(f"  CVaR: {self.optimal_cost:.2f}")
-                logger.info(f"  Custo esperado: {expected_cost:.2f}")
-                logger.info(f"  Pior caso: {worst_case_cost:.2f}")
-                
-                return results
-            else:
-                logger.error(f"Otimização falhou: {problem.status}")
-                raise ValueError(f"Optimization failed with status: {problem.status}")
-                
+            if problem.status not in ['optimal', 'optimal_inaccurate']:
+                logger.error(f"Otimização falhou com status: {problem.status}")
+                raise ValueError(f"Solver status: {problem.status}")
+            
+            # Extrair resultados
+            allocation = q.value
+            cvar_value = cvar.value
+            
+            # Calcular custo esperado
+            expected_cost = np.mean([
+                self._calculate_cost(allocation, scenarios[s, :]) 
+                for s in range(n_scenarios)
+            ])
+            
+            # Calcular pior caso
+            worst_cost = np.max([
+                self._calculate_cost(allocation, scenarios[s, :]) 
+                for s in range(n_scenarios)
+            ])
+            
+            logger.info("Otimização bem-sucedida")
+            logger.info(f"  CVaR: {cvar_value:.2f}")
+            logger.info(f"  Custo esperado: {expected_cost:.2f}")
+            logger.info(f"  Pior caso: {worst_cost:.2f}")
+            
+            return {
+                'allocation': allocation,
+                'cvar':  cvar_value,
+                'expected_cost': expected_cost,
+                'worst_cost': worst_cost,
+                'status':  problem.status
+            }
+            
         except Exception as e:
             logger.error(f"Erro na otimização: {str(e)}")
             raise
     
-    def _calculate_cost(self, q: np.ndarray, demand: np.ndarray) -> float:
-        """Calcula custo para uma alocação e demanda específica."""
-        underage = np.maximum(demand - q, 0)
-        overage = np.maximum(q - demand, 0)
+    def _calculate_cost(self, allocation:  np.ndarray, demand: np.ndarray) -> float:
+        """Calcula custo para uma alocação e demanda específicas."""
+        underage = np.maximum(0, demand - allocation)
+        overage = np.maximum(0, allocation - demand)
         return self.c_underage * np.sum(underage) + self.c_overage * np.sum(overage)
 
 
 def evaluate_decisions(
-    optimization_results: Dict,
-    y_test: pd.Series,
-    predictions: pd.DataFrame,
-    df_test: pd.DataFrame,
-    c_underage:  float = 10.0,
-    c_overage: float = 3.0
-) -> Dict:
+    real_demand: Dict[str, float],
+    allocation_cvar: Dict[str, float],
+    point_forecasts: Dict[str, float],
+    scenarios: np.ndarray,
+    c_underage: float = 10.0,
+    c_overage: float = 3.0,
+    alpha_cvar: float = 0.05
+) -> Dict[str, float]:
     """
-    Avalia decisões de alocação comparando com baselines.
+    Avalia qualidade das decisões de alocação.
     
     Args:
-        optimization_results: Resultados da otimização CVaR
-        y_test: Demanda real de teste
-        predictions: Previsões com intervalos
-        df_test: DataFrame de teste com informações de produto
-        c_underage: Custo de falta
+        real_demand: Demanda real por produto
+        allocation_cvar: Alocação CVaR por produto
+        point_forecasts:  Previsões pontuais por produto
+        scenarios:  Cenários de demanda usados
+        c_underage:  Custo de falta
         c_overage: Custo de excesso
+        alpha_cvar: Alpha usado no CVaR
         
     Returns:
-        Dicionário com métricas comparativas
+        Dicionário com métricas de decisão
     """
     logger.info("Avaliando decisoes de alocacao")
     
-    q_cvar = optimization_results['q_optimal']
+    products = list(real_demand.keys())
     
-    # FIX: Reset de índices para garantir alinhamento
-    df_test_reset = df_test.reset_index(drop=True)
-    y_test_reset = y_test.reset_index(drop=True)
-    predictions_reset = predictions.reset_index(drop=True)
+    # Converter para arrays
+    real_demand_array = np.array([real_demand[p] for p in products])
+    allocation_cvar_array = np.array([allocation_cvar[p] for p in products])
+    point_forecasts_array = np.array([point_forecasts[p] for p in products])
     
-    # Preparar dados
-    products = df_test_reset['product'].unique()
-    n_products = len(products)
+    # Função auxiliar de custo
+    def calc_cost(allocation, demand):
+        underage = np.maximum(0, demand - allocation)
+        overage = np.maximum(0, allocation - demand)
+        return c_underage * np.sum(underage) + c_overage * np.sum(overage)
     
-    # Agregar demanda REAL por produto (soma do período)
-    y_actual_by_product = []
-    predictions_by_product_list = []
+    # Custo CVaR
+    cvar_cost = calc_cost(allocation_cvar_array, real_demand_array)
     
-    for product in products:
-        mask = df_test_reset['product'] == product
-        y_actual_by_product.append(y_test_reset[mask].sum())
-        predictions_by_product_list.append({
-            'lower': predictions_reset[mask]['lower'].sum(),
-            'point':  predictions_reset[mask]['point'].sum(),
-            'upper': predictions_reset[mask]['upper'].sum()
-        })
+    # Custo baseline (usar previsão pontual)
+    mean_cost = calc_cost(point_forecasts_array, real_demand_array)
     
-    y_actual = np.array(y_actual_by_product)
-    predictions_agg = pd.DataFrame(predictions_by_product_list)
-    
-    # Calcular custos para cada método
-    
-    # 1.CVaR
-    underage_cvar = np.maximum(y_actual - q_cvar, 0)
-    overage_cvar = np.maximum(q_cvar - y_actual, 0)
-    cost_cvar = c_underage * np.sum(underage_cvar) + c_overage * np.sum(overage_cvar)
-    service_level_cvar = np.mean(y_actual <= q_cvar)
-    
-    # 2.Mean Baseline (point prediction)
-    q_mean = predictions_agg['point'].values
-    underage_mean = np.maximum(y_actual - q_mean, 0)
-    overage_mean = np.maximum(q_mean - y_actual, 0)
-    cost_mean = c_underage * np.sum(underage_mean) + c_overage * np.sum(overage_mean)
-    
-    # 3.Newsvendor (critical fractile)
+    # Custo Newsvendor (critical fractile)
     critical_fractile = c_underage / (c_underage + c_overage)
-    q_news = predictions_agg['lower'].values + \
-             critical_fractile * (predictions_agg['upper'].values - predictions_agg['lower'].values)
-    underage_news = np.maximum(y_actual - q_news, 0)
-    overage_news = np.maximum(q_news - y_actual, 0)
-    cost_news = c_underage * np.sum(underage_news) + c_overage * np.sum(overage_news)
+    newsvendor_allocation = np.quantile(scenarios, critical_fractile, axis=0)
+    newsvendor_cost = calc_cost(newsvendor_allocation, real_demand_array)
     
-    # 4.Quantile direto (upper)
-    q_quantile = predictions_agg['upper'].values
-    underage_q = np.maximum(y_actual - q_quantile, 0)
-    overage_q = np.maximum(q_quantile - y_actual, 0)
-    cost_q = c_underage * np.sum(underage_q) + c_overage * np.sum(overage_q)
+    # Custo usando quantil alto (conservador)
+    quantile_allocation = np.quantile(scenarios, 0.9, axis=0)
+    quantile_cost = calc_cost(quantile_allocation, real_demand_array)
     
-    metrics = {
-        'CVaR Cost':  cost_cvar,
-        'Mean Baseline Cost': cost_mean,
-        'Newsvendor Cost': cost_news,
-        'Quantile Cost': cost_q,
-        'CVaR Service Level (%)': service_level_cvar * 100,
-        'Savings vs Mean (%)': (1 - cost_cvar / cost_mean) * 100 if cost_mean > 0 else 0,
-        'Savings vs Newsvendor (%)': (1 - cost_cvar / cost_news) * 100 if cost_news > 0 else 0,
-    }
+    # Service level (% da demanda atendida)
+    cvar_service_level = 100 * np.minimum(1, allocation_cvar_array / (real_demand_array + 1e-6)).mean()
+    
+    # Savings
+    savings_newsvendor = 100 * (newsvendor_cost - cvar_cost) / (newsvendor_cost + 1e-6)
+    savings_mean = 100 * (mean_cost - cvar_cost) / (mean_cost + 1e-6)
     
     logger.info("Metricas de decisao (periodo total):")
-    logger.info(f"  Demanda real total: {y_actual.sum():.1f}")
-    logger.info(f"  Alocacao CVaR total: {q_cvar.sum():.1f}")
+    logger.info(f"  Demanda real total: {real_demand_array.sum():.1f}")
+    logger.info(f"  Alocacao CVaR total: {allocation_cvar_array.sum():.1f}")
+    logger.info(f"\nComparacao por produto:")
     
-    # Log detalhado por produto
-    logger.info("\nComparacao por produto:")
     for i, product in enumerate(products):
         logger.info(f"  {product}:")
-        logger.info(f"    Real: {y_actual[i]:.1f} | CVaR: {q_cvar[i]:.1f} | Mean: {q_mean[i]:.1f}")
+        logger.info(f"    Real: {real_demand[product]:.1f} | CVaR: {allocation_cvar[product]:.1f} | Mean: {point_forecasts[product]:.1f}")
     
-    logger.info("\nResumo de custos:")
-    for key, value in metrics.items():
-        logger.info(f"  {key}: {value:.2f}")
+    logger.info(f"\nResumo de custos:")
+    logger.info(f"  CVaR Cost: {cvar_cost:.2f}")
+    logger.info(f"  Mean Baseline Cost: {mean_cost:.2f}")
+    logger.info(f"  Newsvendor Cost: {newsvendor_cost:.2f}")
+    logger.info(f"  Quantile Cost: {quantile_cost:.2f}")
+    logger.info(f"  CVaR Service Level (%): {cvar_service_level:.2f}")
+    logger.info(f"  Savings vs Mean (%): {savings_mean:.2f}")
+    logger.info(f"  Savings vs Newsvendor (%): {savings_newsvendor:.2f}")
     
-    return metrics
+    return {
+        'cvar_cost':  cvar_cost,
+        'mean_cost': mean_cost,
+        'newsvendor_cost': newsvendor_cost,
+        'quantile_cost': quantile_cost,
+        'cvar_service_level': cvar_service_level,
+        'savings_mean': savings_mean,
+        'savings_newsvendor': savings_newsvendor
+    }

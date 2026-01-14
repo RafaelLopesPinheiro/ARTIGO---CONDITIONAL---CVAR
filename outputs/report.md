@@ -1,6 +1,6 @@
 # Relatório:  Sistema de Alocação Ótima com Conformal Prediction + CVaR
 
-**Data de Geração**:  2026-01-08 15:37:17
+**Data de Geração**:  2026-01-13 19:31:55
 
 ---
 
@@ -13,37 +13,37 @@ Este relatório apresenta os resultados do sistema de alocação ótima de estoq
 ### Principais Resultados
 
 ✅ **Service Level**: 100.0% (Target: >90%)  
-✅ **Economia vs Newsvendor**: 17.6%  
-⚠️ **Coverage**: 71.4% (Target: 90%)
+✅ **Economia vs Newsvendor**: 18.8%  
+⚠️ **Coverage**: 95.9% (Target: 90%)
 
 ---
 
 ## 2.Métricas de Previsão
 
 ### 2.1 Acurácia Pontual
-- **MAE (Mean Absolute Error)**: 7.79
-- **RMSE (Root Mean Squared Error)**: 12.18
-- **MAPE (Mean Absolute Percentage Error)**: 161.54%
+- **MAE (Mean Absolute Error)**: 8.71
+- **RMSE (Root Mean Squared Error)**: 12.91
+- **MAPE (Mean Absolute Percentage Error)**: 183.33%
 
 ### 2.2 Qualidade dos Intervalos
-- **Coverage Real**: 71.36% (Target: 90%)
-- **Largura Média do Intervalo**: 20.86
+- **Coverage Real**: 95.92% (Target: 90%)
+- **Largura Média do Intervalo**: 44.46
 
-⚠️ **Status Coverage**: NECESSITA AJUSTE
+✅ **Status Coverage**: APROVADO
 
 ---
 
 ## 3.Métricas de Decisão
 
 ### 3.1 Custos Operacionais (Período Total de Teste)
-- **CVaR**: $37913.00
-- **Mean Baseline**: $7524.89
-- **Newsvendor**: $45991.24
-- **Quantile**: $78613.17
+- **CVaR**: $75358.50
+- **Mean Baseline**: $6396.66
+- **Newsvendor**: $92806.47
+- **Quantile**: $154609.44
 
 ### 3.2 Economia Gerada
-- **vs Mean Baseline**: -403.83%
-- **vs Newsvendor**: 17.56%
+- **vs Mean Baseline**: -1078.09%
+- **vs Newsvendor**: 18.80%
 
 ### 3.3 Nível de Serviço
 - **Service Level**:  100.00% (Target: >90%)
@@ -56,20 +56,19 @@ Este relatório apresenta os resultados do sistema de alocação ótima de estoq
 ## 4.Otimização CVaR
 
 ### 4.1 Resultados
-- **CVaR (10% piores cenários)**: $64699.41
-- **Custo Esperado**:  $46689.57
-- **Pior Caso**: $77726.81
+- **CVaR (10% piores cenários)**: $129315.73
+- **Custo Esperado**:  $88961.73
+- **Pior Caso**: $149180.80
 
 ### 4.2 Alocação Ótima por Produto
-- Camarao 36/40 120G: 10369.80 unidades
-- Camarao 36/40 200G: 19804.64 unidades
-- FILE DE TILAPIA 170G: 8481.82 unidades
-- File de Robalo 170G: 5376.06 unidades
-- File de robalo (moqueca) 300G: 1762.16 unidades
-- Fileto 100G: 8003.78 unidades
-- Parmegiana 150G: 4058.92 unidades
-- TILAPIA 300G: 664.06 unidades
-- Tournedour 150G: 8514.44 unidades
+- Camarao 36/40 120G: 11687.81 unidades
+- Camarao 36/40 200G: 21232.18 unidades
+- FILE DE TILAPIA 170G: 10341.96 unidades
+- File de Robalo 170G: 6788.01 unidades
+- File de robalo (moqueca) 300G: 4031.70 unidades
+- Fileto 100G: 9330.91 unidades
+- Parmegiana 150G: 5656.36 unidades
+- TILAPIA 300G: 10167.57 unidades
 
 
 ---
@@ -88,10 +87,10 @@ Este relatório apresenta os resultados do sistema de alocação ótima de estoq
 
 ### 6.1 Principais Insights
 
-1.**CVaR vs Newsvendor**: O CVaR obteve 17.6% de economia comparado ao Newsvendor, demonstrando robustez
+1.**CVaR vs Newsvendor**: O CVaR obteve 18.8% de economia comparado ao Newsvendor, demonstrando robustez
 2.**Service Level Excelente**: 100.0% indica alta capacidade de atendimento da demanda
 3.**Mean Baseline Otimista**: A baseline Mean apresenta custo muito baixo, sugerindo subestimação da demanda real
-4.**Coverage Abaixo do Target**: 71.4% sugere necessidade de ajuste nos intervalos
+4.**Coverage Abaixo do Target**: 95.9% sugere necessidade de ajuste nos intervalos
 
 ### 6.2 Recomendações
 
@@ -114,8 +113,8 @@ O CVaR demonstra comportamento **conservador e robusto**:
 
 | Critério | Target | Resultado | Status |
 |----------|--------|-----------|--------|
-| Coverage | ≥85% | 71.4% | ⚠️ |
-| Economia vs Newsvendor | ≥10% | 17.6% | ✅ |
+| Coverage | ≥85% | 95.9% | ✅ |
+| Economia vs Newsvendor | ≥10% | 18.8% | ✅ |
 | Service Level | >90% | 100.0% | ✅ |
 
 ---
